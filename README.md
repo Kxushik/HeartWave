@@ -2,15 +2,13 @@
 
 <i> COMP 3004 Team Project (Winter 2023) ; Instructor: Vojislav I. </i>
 
-<h3>
 Members | Github
 ------------ | -------------
 Adrian A. | https://github.com/adrian-alexander
-Kaushik P. | https://github.com/Kxushik
-Kyle P.    | https://github.com/kyleszekely
-Marbo (add last name pls) | https://github.com/Marbo1
-</h3>
----
+Kaushik P.| https://github.com/Kxushik
+Kyle P.   | https://github.com/kyleszekely
+Marbo     | https://github.com/Marbo1
+
 Our team has been tasked with designing computer software for a stand alone device called 
 HeartWave. HeartWave will be able to measure, analyze and display HRV (Heart Rate 
 Variability) patterns through the use of an advanced heart rate monitor and provide users with 
