@@ -4,7 +4,7 @@ History::History(){
 
 }
 
-void History::removeSession(int id){sessions.erase(id);}
+void History::removeSession(int id){sessions.erase(id);} // Fix
 
 void History::addSession(Session *newSession){sessions.push_back(newSession);}
 
