@@ -20,7 +20,6 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
-<<<<<<< HEAD
     mainwindow.h \
     BreathPacer.h \
     Device.h \
@@ -29,16 +28,6 @@ HEADERS += \
     Menu.h \
     Screen.h \
     Session.h \
-=======
-    mainwindow.h
-    BreathPacer.h
-    Device.h
-    Graph.h
-    History.h
-    Menu.h
-    Screen.h
-    Session.h
->>>>>>> 80a759c493a6ef48cf118852a407774e7b05c90b
     Settings.h
 
 FORMS += \
