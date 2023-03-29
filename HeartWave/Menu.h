@@ -1,6 +1,7 @@
 #ifndef MENU_H
 #define MENU_H
 #include <Device.h>
+#include <Screen.h>
 /*
 Class: Menu
 Purpose: Provides functions for the device
