@@ -20,7 +20,15 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    BreathPacer.h \
+    Device.h \
+    Graph.h \
+    History.h \
+    Menu.h \
+    Screen.h \
+    Session.h \
+    Settings.h
 
 FORMS += \
     mainwindow.ui
