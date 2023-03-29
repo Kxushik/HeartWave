@@ -37,7 +37,11 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = HeartWave1.0.0
+<<<<<<< HEAD
 DISTDIR = /home/student/COMP3004-HeartWave/build-HeartWave-Desktop-Debug/.tmp/HeartWave1.0.0
+=======
+DISTDIR = /home/student/Desktop/Heart\ Wave/COMP3004-HeartWave/build-HeartWave-Desktop-Debug/.tmp/HeartWave1.0.0
+>>>>>>> 80a759c493a6ef48cf118852a407774e7b05c90b
 LINK          = g++
 LFLAGS        = 
 LIBS          = $(SUBLIBS) /usr/lib/x86_64-linux-gnu/libQt5Widgets.so /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5Core.so /usr/lib/x86_64-linux-gnu/libGL.so -lpthread   
@@ -353,7 +357,11 @@ compiler_moc_header_clean:
 moc_mainwindow.cpp: ../HeartWave/mainwindow.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
+<<<<<<< HEAD
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/student/COMP3004-HeartWave/build-HeartWave-Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/student/COMP3004-HeartWave/HeartWave -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../HeartWave/mainwindow.h -o moc_mainwindow.cpp
+=======
+	/usr/lib/qt5/bin/moc $(DEFINES) --include '/home/student/Desktop/Heart Wave/COMP3004-HeartWave/build-HeartWave-Desktop-Debug/moc_predefs.h' -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I'/home/student/Desktop/Heart Wave/COMP3004-HeartWave/HeartWave' -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../HeartWave/mainwindow.h -o moc_mainwindow.cpp
+>>>>>>> 80a759c493a6ef48cf118852a407774e7b05c90b
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
