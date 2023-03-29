@@ -1,5 +1,6 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
+#include <tuple>
 /*
 Class: Settings
 Purpose: Contains functions for the user to select when in the settings menu
@@ -22,5 +23,10 @@ class Settings
         void adjustChallenge(int);
         void charge();
         void factoryReset();
+        std::tuple <int,int,int> getSettings();
+    private:
+        int timeInterval;
+        int breaths;
+        int challengeLevel;
 };
 #endif

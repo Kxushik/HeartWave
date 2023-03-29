@@ -23,5 +23,9 @@ class BreathPacer
         int getBreaths();
         void setTI(int);
         void setBreaths(int);
+
+    private:
+        int timeInterval;
+        int breaths;
 };
 #endif

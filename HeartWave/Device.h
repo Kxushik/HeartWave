@@ -1,6 +1,8 @@
 #ifndef DEVICE_H
 #define DEVICE_H
 #include <Session.h>
+#include <History.h>
+#include <Settings.h>
 /*
 Class: Device
 Purpose: Main purpose is to initialize a session, takes data from settings 
@@ -23,6 +25,8 @@ class Device
     private:
         int coherence;
         int challenge;
-        Session currentSession;
+        Session *currentSession;
+        History *dev_history;
+        Settings *dev_settings;
 };
 #endif
