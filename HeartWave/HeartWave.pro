@@ -18,6 +18,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 resources_dir = res
 
 SOURCES += \
+    BreathPacer.cpp \
+    Device.cpp \
+    Graph.cpp \
+    History.cpp \
+    Menu.cpp \
+    Screen.cpp \
+    Session.cpp \
+    Settings.cpp \
     main.cpp \
     mainwindow.cpp
 

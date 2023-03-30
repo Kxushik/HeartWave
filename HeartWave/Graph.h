@@ -23,5 +23,8 @@ class Graph
         int getTime();
         void setHR(int);
         void setTime(int);
+    private:
+        int heartRate;
+        int time;
 };
 #endif

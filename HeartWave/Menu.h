@@ -1,5 +1,7 @@
 #ifndef MENU_H
 #define MENU_H
+#include <Device.h>
+#include <Screen.h>
 /*
 Class: Menu
 Purpose: Provides functions for the device
@@ -26,5 +28,7 @@ public:
     void showHistory();
     void deleteHistory(int);
     void deleteAllHistory();
+    Device *device;
+    Screen *screen;
 };
 #endif

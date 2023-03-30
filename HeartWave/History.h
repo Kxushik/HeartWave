@@ -22,11 +22,11 @@ class History
     public:
         History();
         void removeSession(int);
-        void addSession(Session);
+        void addSession(Session*);
         void clearSessions();
-        Session loadSession(int);
-        vector<Session> getSessions();
+        Session* loadSession(int);
+        std::vector<Session*> getSessions();
     private:
-        vector<Session> sessions;
+        std::vector<Session*> sessions;
 };
 #endif

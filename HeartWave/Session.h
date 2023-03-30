@@ -1,5 +1,7 @@
 #ifndef SESSION_H
 #define SESSION_H
+#include <BreathPacer.h>
+#include <Graph.h>
 /*
 Class: Session
 Purpose: Has all the necessary key values for a session (including id for session), and the algorithms in order to compute these key values
@@ -29,7 +31,7 @@ void setChallengeLevel(int) -> Sets the challenge level
 class Session
 {
     public:
-        Session();
+        Session(int);
         void calculateCS();
         void calculateHC();
         void calculateCL();
@@ -41,6 +43,9 @@ class Session
         int getHRV();
         int getLength();
         void setChallengeLevel(int);
+        Graph* graph;
+        BreathPacer* breathpacer;
+
     private:
         int id;
         int coherenceScore;
