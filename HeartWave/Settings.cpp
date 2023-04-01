@@ -1,4 +1,5 @@
 #include <Settings.h>
+#include <tuple>
 
 
 Settings::Settings(){
@@ -20,7 +21,7 @@ void Settings::charge(){
     //Confusion
 }
 
-void factoryReset(){
+void Settings::factoryReset(){
     //Clear History, and Settings
     timeInterval = 0;
     breaths = 0;
@@ -28,8 +29,8 @@ void factoryReset(){
     //Might now need this idk? Mainwindow can call some shit
 }
 
-tuple<int,int,int> Settings::getSettings(){
-    std::tuple <int,int,int> settings = make_tuple(timeInterval,breaths,challengeLevel);
+std::tuple<int,int,int> Settings::getSettings(){
+    std::tuple <int,int,int> settings = std::make_tuple(timeInterval,breaths,challengeLevel);
     return settings;
 }
 

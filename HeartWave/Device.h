@@ -22,9 +22,11 @@ class Device
     public:
         Device();
         void initSession();
+        Session* getCurrentSession();
     private:
         int coherence;
         int challenge;
+        int nextID;
         Session *currentSession;
         History *dev_history;
         Settings *dev_settings;

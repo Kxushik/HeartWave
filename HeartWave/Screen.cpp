@@ -2,8 +2,7 @@
 
 Screen::Screen(){
     battery = 100;
-    charge,contact = false;
-
+    charge = contact = false;
 }
 
 int Screen::getBattery(){return battery;}

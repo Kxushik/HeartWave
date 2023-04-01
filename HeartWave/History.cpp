@@ -4,12 +4,12 @@ History::History(){
 
 }
 
-void History::removeSession(int id){sessions.erase(id);} // Fix
+//void History::removeSession(int id){sessions.erase(sessions.begin(), id);} // Fix
 
-void History::addSession(Session *newSession){sessions.push_back(newSession);}
+void History::addSession(Session *newSession){ sessions.push_back(newSession); }
 
 void History::clearSessions(){sessions.clear();}
 
-Session* History::loadSession(int id){return sessions[id];}
+Session* History::loadSession(int id){ return sessions[id]; }
 
-std::vector<Session*> History::getSessions(){return sessions;}
+std::vector<Session*> History::getSessions(){ return sessions; }
