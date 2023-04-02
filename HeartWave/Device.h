@@ -3,6 +3,7 @@
 #include <Session.h>
 #include <History.h>
 #include <Settings.h>
+#include <QDebug>
 /*
 Class: Device
 Purpose: Main purpose is to initialize a session, takes data from settings 
@@ -23,6 +24,11 @@ class Device
         Device();
         void initSession();
         Session* getCurrentSession();
+        void endSession();
+        void showHistory();
+        void deleteHistory(int);
+        void deleteAllHistory();
+
     private:
         int coherence;
         int challenge;
