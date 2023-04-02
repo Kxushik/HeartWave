@@ -28,6 +28,7 @@ class Device
         void showHistory();
         void deleteHistory(int);
         void deleteAllHistory();
+        std::tuple <int,int,int>  getSettings();
 
     private:
         int coherence;

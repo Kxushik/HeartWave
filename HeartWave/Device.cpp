@@ -1,5 +1,5 @@
 #include <Device.h>
-
+#include <tuple>
 Device::Device(){
     coherence = -1;
     challenge = -1;
@@ -36,6 +36,8 @@ void Device::deleteHistory(int id){
 void Device::deleteAllHistory(){
     dev_history->clearSessions();
 }
+
+std::tuple <int,int,int> Device::getSettings(){return dev_settings->getSettings();}
 
 
 

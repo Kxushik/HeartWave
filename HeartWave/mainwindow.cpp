@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
+using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -34,4 +34,11 @@ void MainWindow::consoleMenu() {
     qDebug() << qPrintable("Coherence Score: " + QString::number(test.device->getCurrentSession()->getCS()));
     qDebug() << qPrintable("Challenge Level: " + QString::number(test.device->getCurrentSession()->getCL()));
     qDebug() << qPrintable("Heart Rate Variability: " + QString::number(test.device->getCurrentSession()->getHRV()));
+
+    //Settings test, keep so we can see how we can unpack tuples, get<i>test.device->getSettings() also works
+    int ti,br,cl;
+    std::tie(ti,br,cl) = test.device->getSettings();
+    qDebug() << qPrintable("Tuple TI " + QString::number(ti));
+    qDebug() << qPrintable("Tuple Br " + QString::number(br));
+    qDebug() << qPrintable("Tuple CL " + QString::number(cl));
 }
