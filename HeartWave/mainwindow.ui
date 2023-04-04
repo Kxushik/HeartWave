@@ -463,6 +463,16 @@ color:rgb(255,255,255);</string>
        <number>24</number>
       </property>
      </widget>
+     <widget class="QWidget" name="widget_2" native="true">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>80</y>
+        <width>801</width>
+        <height>211</height>
+       </rect>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="widget" native="true">
      <property name="geometry">
