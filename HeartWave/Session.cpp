@@ -27,6 +27,11 @@ void Session::calculateHC(){
 }
 void Session::calculateCL(){
     //Might be the same as HC above^
+    // Medium (Lower and Higher than values indicate respective coherence levels
+    // Level 1 0.5-0.9
+    // Level 2 0.6-2.1
+    // Level 3 1.8-4.0
+    // Level 4 4.0-6.0
 }
 
 void Session::calculateAS(){
