@@ -6,6 +6,8 @@
 #include <qstring.h>
 #include <QMainWindow>
 #include <Menu.h>
+#include <vector>
+#include <tuple>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

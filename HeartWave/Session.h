@@ -11,6 +11,7 @@ int id                      -> The id of the session
 int coherenceScore          -> The coherence of the session
 int heartCoherence          -> The heart coherence of the session
 int challengeLevel          -> The challenge level of the session
+int achievementScore        -> The acheivement score of the session
 int HRV                     -> The HRV of the session
 int length                  -> The length of the session
 
@@ -19,6 +20,7 @@ Session()                   -> Constructor for the Session class
 void calculateCS()          -> Calculates the coherence score
 void calculateHC()          -> Calculates the heart coherence
 void calculateCL()          -> Calculates the challenge level
+void calculateAS()          -> Calculates the achievement score
 void calculateHRV()         -> Calculates the HRV
 int getID()                 -> Returns the id of the session
 int getCS()                 -> Returns the coherence score
@@ -36,6 +38,7 @@ class Session
         void calculateHC();
         void calculateCL();
         void calculateHRV();
+        void calculateAS();
         int getID();
         int getCS();
         int getHC();
@@ -51,6 +54,7 @@ class Session
         int coherenceScore;
         int heartCoherence;
         int challengeLevel;
+        int achievementScore;
         int HRV;
         int length;
 };

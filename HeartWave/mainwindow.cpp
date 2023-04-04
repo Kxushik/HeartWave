@@ -45,4 +45,5 @@ void MainWindow::consoleMenu() {
     qDebug() << qPrintable("Tuple TI " + QString::number(ti));
     qDebug() << qPrintable("Tuple Br " + QString::number(br));
     qDebug() << qPrintable("Tuple CL " + QString::number(cl));
+
 }
