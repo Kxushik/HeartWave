@@ -25,10 +25,8 @@ class Device
         void initSession();
         Session* getCurrentSession();
         void endSession();
-        void showHistory();
-        void deleteHistory(int);
-        void deleteAllHistory();
         std::tuple <int,int,int>  getSettings();
+        History* getHistory();
 
     private:
         int coherence;

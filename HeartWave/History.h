@@ -26,6 +26,8 @@ class History
         void clearSessions();
         Session* loadSession(int);
         std::vector<Session*> getSessions();
+        void showHistory();
+
     private:
         std::vector<Session*> sessions;
 };

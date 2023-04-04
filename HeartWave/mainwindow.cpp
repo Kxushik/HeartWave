@@ -38,6 +38,10 @@ void MainWindow::consoleMenu() {
     //Settings test, keep so we can see how we can unpack tuples, get<i>test.device->getSettings() also works
     int ti,br,cl;
     std::tie(ti,br,cl) = test.device->getSettings();
+    test.endSession();
+    test.newSession();
+    test.endSession();
+    test.showHistory();
     qDebug() << qPrintable("Tuple TI " + QString::number(ti));
     qDebug() << qPrintable("Tuple Br " + QString::number(br));
     qDebug() << qPrintable("Tuple CL " + QString::number(cl));

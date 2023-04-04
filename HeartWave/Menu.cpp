@@ -19,13 +19,13 @@ void Menu::endSession(){
 }
 
 void Menu::showHistory(){
-    device->showHistory();
+    device->getHistory()->showHistory();
 }
 
 void Menu::deleteHistory(int id){
-    device->deleteHistory(id);
+    device->getHistory()->removeSession(id);
 }
 
 void Menu::deleteAllHistory(){
-    device->deleteAllHistory();
+    device->getHistory()->clearSessions();
 }

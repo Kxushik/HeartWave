@@ -22,19 +22,8 @@ void Device::endSession(){
     dev_history->addSession(currentSession);
 }
 
-void Device::showHistory(){
-    qDebug() << qPrintable("======History======");
-    for (Session *s :dev_history->getSessions()){
-        qDebug() << qPrintable("Session # " + QString::number(s->getID()));
-    }
-}
-
-void Device::deleteHistory(int id){
-    dev_history->removeSession(id);
-}
-
-void Device::deleteAllHistory(){
-    dev_history->clearSessions();
+History* Device::getHistory(){
+    return dev_history;
 }
 
 std::tuple <int,int,int> Device::getSettings(){return dev_settings->getSettings();}

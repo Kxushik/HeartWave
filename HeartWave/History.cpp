@@ -1,5 +1,5 @@
 #include <History.h>
-
+#include <QDebug>
 History::History(){
 
 }
@@ -19,3 +19,10 @@ void History::clearSessions(){sessions.clear();}
 Session* History::loadSession(int id){ return sessions[id]; }
 
 std::vector<Session*> History::getSessions(){ return sessions; }
+
+void History::showHistory(){
+    qDebug() << qPrintable("======History======");
+    for (Session *s :sessions){
+        qDebug() << qPrintable("Session # " + QString::number(s->getID()));
+    }
+}
