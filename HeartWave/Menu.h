@@ -2,6 +2,7 @@
 #define MENU_H
 #include <Device.h>
 #include <Screen.h>
+#include <QStringList>
 /*
 Class: Menu
 Purpose: Provides functions for the device
@@ -30,5 +31,7 @@ public:
     void deleteAllHistory();
     Device *device;
     Screen *screen;
+    QStringList menuList;
+
 };
 #endif

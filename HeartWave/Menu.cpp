@@ -4,6 +4,7 @@
 Menu::Menu(){
     device = new Device();
     screen = new Screen();
+    menuList = QStringList{"New Session","End Session","Show History","Delete History","Clear History"};
 }
 
 void Menu::display(){
