@@ -5,7 +5,7 @@ Session::Session(int init_id){
     id  = init_id;
     coherenceScore = 0;
     heartCoherence = 0;
-    challengeLevel = 0;
+    challengeLevel = 1;
     achievementScore = 0;
     HRV = 0;
     length = 0;
@@ -34,7 +34,7 @@ void Session::calculateCL(){
     // Level 3 1.8-4.0
     // Level 4 4.0-6.0
     float lbound = 0.0, ubound = 0.0;
-    switch(level){
+    switch(challengeLevel){
         case 1:
             lbound = 0.5, ubound = 0.9;
         case 2:
