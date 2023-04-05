@@ -1,4 +1,5 @@
 #include <Session.h>
+#include <QDebug>
 
 Session::Session(int init_id){
     id  = init_id;
@@ -32,6 +33,29 @@ void Session::calculateCL(){
     // Level 2 0.6-2.1
     // Level 3 1.8-4.0
     // Level 4 4.0-6.0
+    float lbound = 0.0, ubound = 0.0;
+    switch(level){
+        case 1:
+            lbound = 0.5, ubound = 0.9;
+        case 2:
+            lbound = 0.6,ubound = 2.1;
+        case 3:
+            lbound = 1.8, ubound = 4.0;
+        case 4:
+            lbound = 4.0, ubound = 6.0;
+    }
+    if (coherenceScore < lbound){
+        //Low Coherence
+        qDebug() << qPrintable("Low Coherence");
+    }
+    else if (coherenceScore > ubound){
+        //High Coherence
+        qDebug() << qPrintable("High Coherence");
+    }
+    else{
+        //Normal Coherence
+        qDebug() << qPrintable("Normal Coherence");
+    }
 }
 
 void Session::calculateAS(){
