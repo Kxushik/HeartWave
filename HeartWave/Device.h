@@ -4,6 +4,8 @@
 #include <History.h>
 #include <Settings.h>
 #include <QDebug>
+#include <utility>
+#include <vector>
 /*
 Class: Device
 Purpose: Main purpose is to initialize a session, takes data from settings 
@@ -22,16 +24,20 @@ class Device
 {
     public:
         Device();
-        void initSession();
+        void initSession(int);
         Session* getCurrentSession();
         void endSession();
         std::tuple <int,int,int>  getSettings();
         History* getHistory();
+        void initializeMockData();
 
     private:
         int coherence;
         int challenge;
         int nextID;
+        std::vector<std::pair<double, double>> data_set1;
+        std::vector<std::pair<double, double>> data_set2;
+        std::vector<std::pair<double, double>> date_set3;
         Session *currentSession;
         History *dev_history;
         Settings *dev_settings;

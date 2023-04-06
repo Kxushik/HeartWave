@@ -39,7 +39,7 @@ void MainWindow::consoleMenu() {
     int ti,br,cl;
     std::tie(ti,br,cl) = test.device->getSettings();
     test.endSession();
-    test.newSession();
+    test.newSession(2);
     test.endSession();
     test.showHistory();
     qDebug() << qPrintable("Tuple TI " + QString::number(ti));

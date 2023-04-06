@@ -3,6 +3,7 @@
 #include <Device.h>
 #include <Screen.h>
 #include <QStringList>
+#include <utility>
 /*
 Class: Menu
 Purpose: Provides functions for the device
@@ -24,7 +25,7 @@ class Menu
 public:
     Menu();
     void display();
-    void newSession();
+    void newSession(int);
     void endSession();
     void showHistory();
     void deleteHistory(int);
