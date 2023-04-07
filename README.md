@@ -1,6 +1,6 @@
 # COMP3004-HeartWave
 
-<i> COMP 3004 Team Project (Winter 2023) ; Instructor: Vojislav I. </i>
+<i> Team 29 - COMP 3004 Team Project (Winter 2023) ; Instructor: Vojislav I. </i>
 
 Members | Github
 ------------ | -------------
