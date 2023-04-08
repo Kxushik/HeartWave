@@ -37,7 +37,7 @@ class Session
     public:
         Session(int, std::vector<std::pair<double, double>>, std::vector<std::pair<double, double>>);
         void calculateCS(std::vector<std::pair<double, double>>);
-        void calculateHC(double);
+        int calculateHC(double);
         void calculateCL();
         double calculateHRV(std::vector<std::pair<double, double>>);
         void calculateAS();
@@ -47,8 +47,9 @@ class Session
         int getCL();
         int getHRV();
         int getLength();
+        int getCSDataSize();
         void setChallengeLevel(int);
-        void runHC();
+        int runHC(int i);
         Graph* graph;
         BreathPacer* breathpacer;
 
@@ -62,5 +63,6 @@ class Session
         int length;
         std::vector<std::pair<double, double>> cs_data;
         std::vector<std::pair<double, double>> hrv_data;
+
 };
 #endif

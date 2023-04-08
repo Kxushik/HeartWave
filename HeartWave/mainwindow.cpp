@@ -3,14 +3,20 @@
 using namespace std;
 
 //Global variables - Test
-
-
+Menu test;
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
 
 
     ui->setupUi(this);
     consoleMenu();
     initialize();
+
+//    Timer = new QTimer(this);
+//    connect(Timer, &QTimer::timeout, this, &MainWindow::handleCS);
+//    Timer->setInterval(1000);
+//    Timer->start();
+    connect(this, &MainWindow::updateCS, this, &MainWindow::onUpdateCS);
+    performIteration();
 
     //Directions
     connect(ui->buttonUp, &QPushButton::clicked, this, &MainWindow::handleButtons);
@@ -77,7 +83,7 @@ void MainWindow::initialize() {
 //Function to test the menu through the console until front-enders connect the UI to our functions...
 void MainWindow::consoleMenu() {
     //Initializing a test menu (print statements to console to check values while adding the functions)
-    Menu test;
+
 //    qDebug() << qPrintable("======Printing Screen======");
 //    qDebug() << qPrintable("Battery Level: " + QString::number(test.screen->getBattery()));
 //    qDebug() << qPrintable("Charge: " + QString::number(test.screen->getCharge()));
@@ -93,19 +99,26 @@ void MainWindow::consoleMenu() {
 //    qDebug() << qPrintable("Heart Rate Variability: " + QString::number(test.device->getCurrentSession()->getHRV()));
 
 //    //Settings test, keep so we can see how we can unpack tuples, get<i>test.device->getSettings() also works
-//    int ti,br,cl;
-//    std::tie(ti,br,cl) = test.device->getSettings();
-//    test.endSession();
-//    test.newSession(2);
-//    test.endSession();
-//    test.showHistory();
-//    qDebug() << qPrintable("Tuple TI " + QString::number(ti));
-//    qDebug() << qPrintable("Tuple Br " + QString::number(br));
-//    qDebug() << qPrintable("Tuple CL " + QString::number(cl));
+    int ti,br,cl;
+    std::tie(ti,br,cl) = test.device->getSettings();
+    test.endSession();
+    test.newSession(2);
+    test.endSession();
+    test.showHistory();
+    qDebug() << qPrintable("Tuple TI " + QString::number(ti));
+    qDebug() << qPrintable("Tuple Br " + QString::number(br));
+    qDebug() << qPrintable("Tuple CL " + QString::number(cl));
 
     //testing HRV calc
     test.newSession(1);
-    test.device->getCurrentSession()->runHC();
+//    for (int i = 0; i < test.device->getCurrentSession()->getCSDataSize(); i++) {
+//        int tiddies = test.device->getCurrentSession()->runHC(i);
+////        setCS_UI(tiddies);
+////        qDebug() << qPrintable("rtga:" + QString::number(getCS_UI()));
+////        qDebug() << qPrintable("Score: " + QString::number(tiddies));
+////        setHC_UI(tiddies);
+////        handleCS(tiddies);
+//    }
 
 }
 void MainWindow::handleButtons() {
@@ -117,11 +130,12 @@ void MainWindow::handleButtons() {
     switch(mapStringValues[buttonName.toStdString()]) {
         case stringValue::up:
             qDebug() << qPrintable("Up function");
-            ui->widget2->setVisible(true);
+            setHigh_UI(true);
+//            consoleMenu();
         break;
         case stringValue::down:
             qDebug() << qPrintable("Down function");
-            ui->widget2->setVisible(false);
+//            ui->widget2->setVisible(false);
         break;
         case stringValue::left:
             qDebug() << qPrintable("Left function");
@@ -155,20 +169,80 @@ void MainWindow::setBattery_UI(int newVal) {
     ui->progressBatteryLevel->setValue(newVal);
 }
 
-//void MainWindow::setCharge_UI(int newVal) {
-//    ui->
-//}
-
-//void MainWindow::setContact_UI(bool newVal) {
-//    ui->
-//}
-
 void MainWindow::setLength_UI(int newVal) {
     ui->textLength->setText(QString::number(newVal));
 }
 
 void MainWindow::setHC_UI(int newVal) {
-    ui->textCoherence->setText(QString::number(newVal));
+    switch (newVal) {
+    case 0:
+        ui->textCoherence->setText(QString::fromStdString("Low"));
+        qDebug() << qPrintable("Low");
+        return;
+    case 1:
+        ui->textCoherence->setText(QString::fromStdString("Med"));
+        qDebug() << qPrintable("Med");
+        return;
+    case 2:
+        ui->textCoherence->setText(QString::fromStdString("High"));
+        qDebug() << qPrintable("High");
+        return;
+    }
+}
+
+//void MainWindow::handleCS() {
+//    switch(cs) {
+//    case 0:
+//        setLow_UI(true);
+//        break;
+//    case 1:
+//        setMed_UI(true);
+//        break;
+//    case 2:
+//        setHigh_UI(true);
+//        break;
+//    }
+////    sleep(1);
+//    qDebug() << qPrintable("wonderland");
+//    setLow_UI(false);
+//    setMed_UI(false);
+//    setHigh_UI(false);
+
+// }
+
+void MainWindow::onUpdateCS(int csIndex) {
+    int val = getHCVal();
+    qDebug() << qPrintable("HCVal = " + QString::number(val));
+    switch (val) {
+    case 0:
+        setLow_UI(true);
+        setMed_UI(false);
+        setHigh_UI(false);
+        qDebug() << qPrintable("Low");
+        break;
+    case 1:
+        setLow_UI(false);
+        setMed_UI(true);
+        setHigh_UI(false);
+        qDebug() << qPrintable("Med");
+        break;
+    case 2:
+        setLow_UI(false);
+        setMed_UI(false);
+        setHigh_UI(true);
+        qDebug() << qPrintable("High");
+        break;
+    }
+
+}
+
+void MainWindow::performIteration() {
+    setHCVal(test.device->getCurrentSession()->runHC(csIndex));
+
+    emit updateCS(csIndex);
+
+    csIndex++;
+    QTimer::singleShot(5000, this, &MainWindow::performIteration);
 }
 
 void MainWindow::setLow_UI(bool newVal) {
@@ -211,4 +285,12 @@ void MainWindow::setHigh_UI(bool newVal) {
             "color:rgb(255,255,255);"
         );
     }
+}
+
+void MainWindow::setHCVal(int newVal) {
+    hcVal = newVal;
+}
+
+int MainWindow::getHCVal() {
+    return hcVal;
 }

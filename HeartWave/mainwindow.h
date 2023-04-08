@@ -8,6 +8,9 @@
 #include <Menu.h>
 #include <vector>
 #include <tuple>
+#include <unistd.h>
+#include <QTimer>
+#include <QElapsedTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,21 +26,29 @@ public:
     void handleButtons();
     ~MainWindow();
 
-    //setters for UI values, not all of them will be useful (sessionID)
-    void setBattery_UI(int newVal); //done
-    //whats the difference between battery and charge
-    void setCharge_UI(bool newVal);
-    void setContact_UI(bool newVal);
-    void setLength_UI(int newVal); //done
-    void setID_UI(int newVal);
-    void setHC_UI(int newVal); //done
-    void setCS_UI(int newVal);
-    void setCL_UI(int newVal);
-    void setHRV_UI(int newVal);
 
+    //getters
+
+    void setBattery_UI(int newVal); //done
+    void setLength_UI(int newVal); //done
+    void setHC_UI(int newVal); //done
+
+    void handleCS();
     void setLow_UI(bool newVal);
     void setMed_UI(bool newVal);
     void setHigh_UI(bool newVal);
+
+    int getHCVal();
+    void setHCVal(int newVal);
+
+
+signals:
+    void updateCS(int csIndex);
+
+public slots:
+    void onUpdateCS(int csIndex);
+    void performIteration();
+
 
 private:
     Ui::MainWindow *ui;
@@ -55,6 +66,8 @@ private:
     };
     std::map<std::string, stringValue> mapStringValues;
     void initialize();
+    int csIndex = 0;
+    int hcVal = 0;
 
 };
 #endif // MAINWINDOW_H

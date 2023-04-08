@@ -40,7 +40,7 @@ void Session::calculateCS(std::vector<std::pair<double, double>> cs_data_set){
 }
 
 //DONE
-void Session::calculateHC(double cs){
+int Session::calculateHC(double cs){
     //Heart Coeherence = Internal Harmory, LEDS at top are reflective of it (64 second interval updates)
     float lbound = 0.0, ubound = 0.0;
     if (challengeLevel == 1) {
@@ -57,19 +57,23 @@ void Session::calculateHC(double cs){
     }
     if (cs < lbound){
         //Low Coherence (RED COLOUR)
-        qDebug() << qPrintable("Low Coherence");
+//        qDebug() << qPrintable("Low Coherence");
         //qDebug() << qPrintable(QString::number(lbound));
-        qDebug() << qPrintable(QString::number(cs));
+//        qDebug() << qPrintable(QString::number(cs));
+        return 0;
+
     }
     else if (cs > ubound){
         //High Coherence (GREEN COLOUR)
-        qDebug() << qPrintable("High Coherence");
-        qDebug() << qPrintable(QString::number(cs));
+//        qDebug() << qPrintable("High Coherence");
+//        qDebug() << qPrintable(QString::number(cs));
+        return 2;
     }
     else{
         //Normal Coherence (BLUE COLOUR)
-        qDebug() << qPrintable("Normal Coherence");
-        qDebug() << qPrintable(QString::number(cs));
+//        qDebug() << qPrintable("Normal Coherence");
+//        qDebug() << qPrintable(QString::number(cs));
+        return 1;
     }
 }
 
@@ -123,13 +127,16 @@ int Session::getHC(){return heartCoherence;}
 int Session::getCL(){return challengeLevel;}
 int Session::getHRV(){return HRV;}
 int Session::getLength(){return length;}
+int Session::getCSDataSize(){return cs_data.size();};
 
 void Session::setChallengeLevel(int newChallengeLevel){
     //
 }
 
-void Session::runHC() {
-    for (int i=0; i<cs_data.size(); i++) {
-        calculateHC(std::get<1>(cs_data[i]));
-    }
+int Session::runHC(int i) {
+//    for (int i=0; i<cs_data.size(); i++) {
+//        calculateHC(std::get<1>(cs_data[i]));
+//    }
+    qDebug() << qPrintable("i = " + QString::number(i));
+    return calculateHC(std::get<1>(cs_data[i]));
 }
