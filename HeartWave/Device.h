@@ -35,9 +35,12 @@ class Device
         int coherence;
         int challenge;
         int nextID;
-        std::vector<std::pair<double, double>> data_set1;
-        std::vector<std::pair<double, double>> data_set2;
-        std::vector<std::pair<double, double>> date_set3;
+        std::vector<std::pair<double, double>> cs_data_set1;
+        std::vector<std::pair<double, double>> cs_data_set2;
+        std::vector<std::pair<double, double>> cs_data_set3;
+        std::vector<std::pair<double, double>> hrv_data_set1;
+        std::vector<std::pair<double, double>> hrv_data_set2;
+        std::vector<std::pair<double, double>> hrv_data_set3;
         Session *currentSession;
         History *dev_history;
         Settings *dev_settings;

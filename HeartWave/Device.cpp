@@ -13,8 +13,23 @@ Device::Device(){
 
 void Device::initSession(int dataset){
     qDebug()<<qPrintable("Loading Dataset "+QString::number(dataset));
+    std::vector<std::pair<double, double>> cs_data_set;
+    std::vector<std::pair<double, double>> hrv_data_set;
+    if (dataset == 1) {
+          cs_data_set = cs_data_set1;
+          hrv_data_set = hrv_data_set1;
+    }
+    if (dataset == 2) {
+        cs_data_set = cs_data_set2;
+        hrv_data_set = hrv_data_set2;
+    }
+    if (dataset == 3) {
+        cs_data_set = cs_data_set3;
+        hrv_data_set = hrv_data_set3;
+    }
+
     nextID += 1;
-    currentSession = new Session(nextID);
+    currentSession = new Session(nextID, cs_data_set, hrv_data_set);
 }
 
 Session* Device::getCurrentSession() {
@@ -32,7 +47,7 @@ History* Device::getHistory(){
 std::tuple <int,int,int> Device::getSettings(){return dev_settings->getSettings();}
 
 void Device::initializeMockData(){
-    data_set1= {
+    cs_data_set1= {
             {28.10, 0.93},
             {32.60, 1.07},
             {39.12, 1.81},
@@ -56,7 +71,7 @@ void Device::initializeMockData(){
             {131.64, 1.79},
             {139.40, 0.68}
     };
-    data_set2 = {
+    cs_data_set2 = {
             {0.37, 1.55},
             {5.49, 0.58},
             {10.44, 0.65},
@@ -85,7 +100,7 @@ void Device::initializeMockData(){
             {167.18, 1.67},
             {175.61, 1.67}
     };
-    date_set3 ={
+    cs_data_set3 ={
             {0, 0.72},
             {4.32, 0.79},
             {13.87, 1.41},
@@ -114,10 +129,117 @@ void Device::initializeMockData(){
             {172.97, 0.60},
             {179.64, 0.44}
     };
+    hrv_data_set1 = {
+                {118, 74},
+                {119, 71},
+                {121, 78},
+                {122, 80},
+                {124, 80},
+                {124, 81},
+                {127, 76},
+                {129, 70},
+                {129, 73},
+                {130, 73},
+                {131, 76},
+                {132, 71},
+                {132, 72},
+                {134, 71},
+                {136, 77},
+                {136, 76},
+                {139, 87},
+                {139, 84},
+                {140, 84},
+                {143, 72},
+                {145, 72},
+                {147, 71},
+                {149, 79},
+                {150, 78},
+                {151, 80},
+                {152, 81},
+                {153, 82},
+                {154, 79},
+                {155, 76},
+                {157, 74},
+                {158, 72},
+                {160, 73},
+                {161, 71},
+                {162, 75},
+                {162, 77},
+                {163, 82},
+                {166, 93},
+                {169, 73}
+    };
+    hrv_data_set2 = {
+                {0, 61},
+                {3, 59},
+                {12, 58},
+                {21, 55},
+                {27, 55},
+                {30, 54},
+                {38, 55},
+                {43, 54},
+                {46, 56},
+                {51, 53},
+                {54, 62},
+                {61, 56},
+                {64, 57},
+                {74, 54},
+                {80, 55},
+                {95, 61},
+                {99, 60},
+                {102, 61},
+                {109, 58},
+                {113, 59},
+                {122, 54},
+                {125, 54},
+                {130, 54},
+                {133, 55},
+                {139, 55},
+                {145, 56},
+                {153, 54},
+                {160, 55},
+                {165, 54},
+                {169, 55},
+                {177, 54},
+                {180, 55}
+    };
+    hrv_data_set3 = {
+                {0, 115},
+                {7, 99},
+                {14, 94},
+                {17, 95},
+                {21, 93},
+                {32, 88},
+                {45, 88},
+                {49, 87},
+                {55, 92},
+                {61, 92},
+                {72, 83},
+                {76, 85},
+                {80, 88},
+                {85, 89},
+                {89, 91},
+                {93, 92},
+                {107, 81},
+                {112, 80},
+                {118, 85},
+                {127, 91},
+                {133, 90},
+                {138, 88},
+                {141, 90},
+                {145, 90},
+                {155, 95},
+                {160, 94},
+                {169, 85},
+                {174, 82},
+                {178, 83},
+                {180, 83}
+    };
     //for (auto const& pair : data_set1) {
     //        qDebug() << qPrintable("Time: " + QString::number(pair.first) + ", Coherence Score: " + QString::number(pair.second));
     //    }
 }
+
 
 
 

@@ -1,5 +1,7 @@
 #ifndef SESSION_H
 #define SESSION_H
+#include <vector>
+#include <tuple>
 #include <BreathPacer.h>
 #include <Graph.h>
 /*
@@ -33,11 +35,11 @@ void setChallengeLevel(int) -> Sets the challenge level
 class Session
 {
     public:
-        Session(int);
-        void calculateCS();
-        void calculateHC();
+        Session(int, std::vector<std::pair<double, double>>, std::vector<std::pair<double, double>>);
+        void calculateCS(std::vector<std::pair<double, double>>);
+        void calculateHC(double);
         void calculateCL();
-        void calculateHRV();
+        double calculateHRV(std::vector<std::pair<double, double>>);
         void calculateAS();
         int getID();
         int getCS();
@@ -46,6 +48,7 @@ class Session
         int getHRV();
         int getLength();
         void setChallengeLevel(int);
+        void runHC();
         Graph* graph;
         BreathPacer* breathpacer;
 
@@ -57,5 +60,7 @@ class Session
         int achievementScore;
         int HRV;
         int length;
+        std::vector<std::pair<double, double>> cs_data;
+        std::vector<std::pair<double, double>> hrv_data;
 };
 #endif
