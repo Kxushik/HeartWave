@@ -7,8 +7,9 @@ Session::Session(int init_id, std::vector<std::pair<double, double>> cs_data_set
     heartCoherence = 0;
     challengeLevel = 1;
     achievementScore = 0;
-    HRV = 0;
     length = 0;
+
+    HRV = 0;
     graph = new Graph();
     breathpacer = new BreathPacer();
     cs_data = cs_data_set;
@@ -43,41 +44,36 @@ void Session::calculateCS(std::vector<std::pair<double, double>> cs_data_set){
 int Session::calculateHC(double cs){
     //Heart Coeherence = Internal Harmory, LEDS at top are reflective of it (64 second interval updates)
     float lbound = 0.0, ubound = 0.0;
-    if (challengeLevel == 1) {
-        lbound = 0.5, ubound = 0.9;
-    }
-    if (challengeLevel == 2) {
-        lbound = 0.6,ubound = 2.1;
-    }
-    if (challengeLevel == 3) {
-        lbound = 1.8, ubound = 4.0;
-    }
-    if (challengeLevel == 4) {
-        lbound = 4.0, ubound = 6.0;
+    switch(challengeLevel){
+        case 1:
+            lbound = 0.5, ubound = 0.9;
+            break;
+        case 2:
+            lbound = 0.6,ubound = 2.1;
+            break;
+        case 3:
+            lbound = 1.8, ubound = 4.0;
+            break;
+        case 4:
+            lbound = 4.0, ubound = 6.0;
+            break;
     }
     if (cs < lbound){
         //Low Coherence (RED COLOUR)
-//        qDebug() << qPrintable("Low Coherence");
-        //qDebug() << qPrintable(QString::number(lbound));
-//        qDebug() << qPrintable(QString::number(cs));
-        return 0;
+        heartCoherence = 0;
 
     }
     else if (cs > ubound){
         //High Coherence (GREEN COLOUR)
-//        qDebug() << qPrintable("High Coherence");
-//        qDebug() << qPrintable(QString::number(cs));
-        return 2;
+        heartCoherence = 2;
     }
     else{
         //Normal Coherence (BLUE COLOUR)
-//        qDebug() << qPrintable("Normal Coherence");
-//        qDebug() << qPrintable(QString::number(cs));
-        return 1;
+        heartCoherence = 1;
     }
 }
 
-//DONE
+//Not sure
 void Session::calculateCL(){
     //Might be the same as HC above^
     // Medium (Lower and Higher than values indicate respective coherence levels
@@ -133,10 +129,14 @@ void Session::setChallengeLevel(int newChallengeLevel){
     //
 }
 
-int Session::runHC(int i) {
-//    for (int i=0; i<cs_data.size(); i++) {
-//        calculateHC(std::get<1>(cs_data[i]));
-//    }
-    qDebug() << qPrintable("i = " + QString::number(i));
-    return calculateHC(std::get<1>(cs_data[i]));
+std::tuple<int, double,int,int,double,int,int> Session::display_data(int index){
+    //Index of CS within dataset
+    std::tuple<int, double,int,int,double,int,int> data_tuple;
+    coherenceScore = std::get<1>(cs_data[index]);
+    calculateHC(coherenceScore);
+    calculateAS();
+    length+=5;
+
+    data_tuple = std::make_tuple(id,coherenceScore,heartCoherence,challengeLevel,achievementScore,length,breathpacer->getTI());
+    return data_tuple;
 }

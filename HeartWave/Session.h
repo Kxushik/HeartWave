@@ -49,13 +49,13 @@ class Session
         int getLength();
         int getCSDataSize();
         void setChallengeLevel(int);
-        int runHC(int i);
         Graph* graph;
         BreathPacer* breathpacer;
+        std::tuple<int, double,int,int,double,int,int> display_data(int);
 
     private:
         int id;
-        int coherenceScore;
+        double coherenceScore;
         int heartCoherence;
         int challengeLevel;
         int achievementScore;
