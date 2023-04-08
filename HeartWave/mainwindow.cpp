@@ -253,7 +253,7 @@ void MainWindow::setLow_UI(bool newVal) {
         );
     } else {
         ui->buttonCoherenceLow->setStyleSheet(
-            "background-color:rgb(125,0,0);"
+            "background-color:rgb(25,0,0);"
             "color:rgb(255,255,255);"
         );
     }
@@ -267,7 +267,7 @@ void MainWindow::setMed_UI(bool newVal) {
         );
     } else {
         ui->buttonCoherenceMedium->setStyleSheet(
-            "background-color:rgb(0,0,125);"
+            "background-color:rgb(0,0,25);"
             "color:rgb(255,255,255);"
         );
     }
@@ -281,7 +281,7 @@ void MainWindow::setHigh_UI(bool newVal) {
         );
     } else {
         ui->buttonCoherenceHigh->setStyleSheet(
-            "background-color:rgb(0,125,0);"
+            "background-color:rgb(0,25,0);"
             "color:rgb(255,255,255);"
         );
     }
