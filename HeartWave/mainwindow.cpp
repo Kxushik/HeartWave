@@ -198,10 +198,27 @@ void MainWindow::onUpdateUI(int csIndex) {
 }
 
 void MainWindow::performIteration() {
-    setHCVal(test.device->getCurrentSession()->runHC(csIndex));
+    std::tuple<int, double,int,int,double,int,int> data_tuple = test.device->getCurrentSession()->display_data(csIndex);
+    //setHCVal(test.device->getCurrentSession()->display_data(csIndex));
+    int id;
+    double cs;
+    int hc;
+    int cl;
+    double as;
+    int l;
+    int bti;
 
+    std::tie(id,cs,hc,cl,as,l,bti) = data_tuple;
+
+    setHCVal(hc);
+    qDebug() << qPrintable("id: "+QString::number(id));
+    qDebug() << qPrintable("CS: "+QString::number(cs));
+    qDebug() << qPrintable("hc: "+QString::number(hc));
+    qDebug() << qPrintable("cl: "+QString::number(cl));
+    qDebug() << qPrintable("as: "+QString::number(as));
+    qDebug() << qPrintable("l: "+QString::number(l));
+    qDebug() << qPrintable("bti: "+QString::number(bti));
     emit updateUI(csIndex);
-
     csIndex++;
 }
 
