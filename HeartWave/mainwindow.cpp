@@ -3,20 +3,13 @@
 using namespace std;
 
 //Global variables - Test
-Menu test;
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
-
 
     ui->setupUi(this);
     consoleMenu();
     initialize();
 
-//    Timer = new QTimer(this);
-//    connect(Timer, &QTimer::timeout, this, &MainWindow::handleCS);
-//    Timer->setInterval(1000);
-//    Timer->start();
-    connect(this, &MainWindow::updateCS, this, &MainWindow::onUpdateCS);
-    performIteration();
+    connect(this, &MainWindow::updateUI, this, &MainWindow::onUpdateUI);
 
     //Directions
     connect(ui->buttonUp, &QPushButton::clicked, this, &MainWindow::handleButtons);
@@ -58,26 +51,43 @@ void MainWindow::initialize() {
     qDebug() << qPrintable("======Initializing session values======");
 
     //Ask how to fill in the constructor cuz this creates two new objects
-    Menu test;
-    int timer = 0;
+//    Menu test;
+//    int timer = 0;
 
-    int batteryLevel = test.screen->getBattery();
-    bool batteryCharge = test.screen->getCharge();
-    bool contact = test.screen->getContact();
-    int length = test.device->getCurrentSession()->getLength();
+//    int batteryLevel = test.screen->getBattery();
+//    bool batteryCharge = test.screen->getCharge();
+//    bool contact = test.screen->getContact();
+//    int length = test.device->getCurrentSession()->getLength();
 
-    int sessionId = test.device->getCurrentSession()->getID();
-    int HC = test.device->getCurrentSession()->getHC();
-    int CS = test.device->getCurrentSession()->getCS();
-    int CL = test.device->getCurrentSession()->getCL();
-    int HRV = test.device->getCurrentSession()->getHRV();
+//    int sessionId = test.device->getCurrentSession()->getID();
+//    int HC = test.device->getCurrentSession()->getHC();
+//    int CS = test.device->getCurrentSession()->getCS();
+//    int CL = test.device->getCurrentSession()->getCL();
+//    int HRV = test.device->getCurrentSession()->getHRV();
 
-    ui->progressBatteryLevel->setValue(batteryLevel);
-    ui->textCoherence->setText(QString::number(HC));
-    ui->textLength->setText(QString::number(timer));
-    ui->textAchievement->setText(QString::number(HRV));
+//    ui->progressBatteryLevel->setValue(batteryLevel);
+//    ui->textCoherence->setText(QString::number(HC));
+//    ui->textLength->setText(QString::number(timer));
+//    ui->textAchievement->setText(QString::number(HRV));
 
+    //Breath pacer initialization
+    progressBar = ui->breathIndicator;
+    progressBar->setMinimum(0);
+    progressBar->setMaximum(100);
+    progressBar->setValue(0);
+    progressValue = 0;
 
+    //Can be whatever the setting is
+    int durationInSeconds = 1;
+    //Duration in milliseconds divided by the number of steps (100)
+    int breathTimerInterval = (durationInSeconds * 1000) / 100;
+    int uiTimerInterval = 5000;
+    breathTimer = new QTimer(this);
+    uiTimer = new QTimer(this);
+    connect(breathTimer, &QTimer::timeout, this, &MainWindow::updateBreathPacer);
+    connect(uiTimer, &QTimer::timeout, this, &MainWindow::performIteration);
+    breathTimer->start(breathTimerInterval);
+    uiTimer->start(uiTimerInterval);
 }
 
 //Function to test the menu through the console until front-enders connect the UI to our functions...
@@ -99,26 +109,9 @@ void MainWindow::consoleMenu() {
 //    qDebug() << qPrintable("Heart Rate Variability: " + QString::number(test.device->getCurrentSession()->getHRV()));
 
 //    //Settings test, keep so we can see how we can unpack tuples, get<i>test.device->getSettings() also works
-    int ti,br,cl;
-    std::tie(ti,br,cl) = test.device->getSettings();
-    test.endSession();
-    test.newSession(2);
-    test.endSession();
-    test.showHistory();
-    qDebug() << qPrintable("Tuple TI " + QString::number(ti));
-    qDebug() << qPrintable("Tuple Br " + QString::number(br));
-    qDebug() << qPrintable("Tuple CL " + QString::number(cl));
 
     //testing HRV calc
     test.newSession(1);
-//    for (int i = 0; i < test.device->getCurrentSession()->getCSDataSize(); i++) {
-//        int tiddies = test.device->getCurrentSession()->runHC(i);
-////        setCS_UI(tiddies);
-////        qDebug() << qPrintable("rtga:" + QString::number(getCS_UI()));
-////        qDebug() << qPrintable("Score: " + QString::number(tiddies));
-////        setHC_UI(tiddies);
-////        handleCS(tiddies);
-//    }
 
 }
 void MainWindow::handleButtons() {
@@ -130,12 +123,9 @@ void MainWindow::handleButtons() {
     switch(mapStringValues[buttonName.toStdString()]) {
         case stringValue::up:
             qDebug() << qPrintable("Up function");
-            setHigh_UI(true);
-//            consoleMenu();
         break;
         case stringValue::down:
             qDebug() << qPrintable("Down function");
-//            ui->widget2->setVisible(false);
         break;
         case stringValue::left:
             qDebug() << qPrintable("Left function");
@@ -173,64 +163,35 @@ void MainWindow::setLength_UI(int newVal) {
     ui->textLength->setText(QString::number(newVal));
 }
 
-void MainWindow::setHC_UI(int newVal) {
-    switch (newVal) {
-    case 0:
-        ui->textCoherence->setText(QString::fromStdString("Low"));
-        qDebug() << qPrintable("Low");
-        return;
-    case 1:
-        ui->textCoherence->setText(QString::fromStdString("Med"));
-        qDebug() << qPrintable("Med");
-        return;
-    case 2:
-        ui->textCoherence->setText(QString::fromStdString("High"));
-        qDebug() << qPrintable("High");
-        return;
-    }
-}
+void MainWindow::onUpdateUI(int csIndex) {
+    // This function will take in a data tuple that contains all the data to be updated on the UI
+    //coherence score, heart rate, achievement, etc
+    std::tuple<int,int,double,int> dataTup = make_tuple(1, 2, 3.0, 4);
+    int cs, hr, ac, et;
+    std::tie(cs, hr, ac, et) = dataTup;
 
-//void MainWindow::handleCS() {
-//    switch(cs) {
-//    case 0:
-//        setLow_UI(true);
-//        break;
-//    case 1:
-//        setMed_UI(true);
-//        break;
-//    case 2:
-//        setHigh_UI(true);
-//        break;
-//    }
-////    sleep(1);
-//    qDebug() << qPrintable("wonderland");
-//    setLow_UI(false);
-//    setMed_UI(false);
-//    setHigh_UI(false);
-
-// }
-
-void MainWindow::onUpdateCS(int csIndex) {
     int val = getHCVal();
     qDebug() << qPrintable("HCVal = " + QString::number(val));
+
+    //Heart Coherence scores
     switch (val) {
     case 0:
         setLow_UI(true);
         setMed_UI(false);
         setHigh_UI(false);
-        qDebug() << qPrintable("Low");
+        ui->textCoherence->setText(QString::fromStdString("Low"));
         break;
     case 1:
         setLow_UI(false);
         setMed_UI(true);
         setHigh_UI(false);
-        qDebug() << qPrintable("Med");
+        ui->textCoherence->setText(QString::fromStdString("Med"));
         break;
     case 2:
         setLow_UI(false);
         setMed_UI(false);
         setHigh_UI(true);
-        qDebug() << qPrintable("High");
+        ui->textCoherence->setText(QString::fromStdString("High"));
         break;
     }
 
@@ -239,10 +200,9 @@ void MainWindow::onUpdateCS(int csIndex) {
 void MainWindow::performIteration() {
     setHCVal(test.device->getCurrentSession()->runHC(csIndex));
 
-    emit updateCS(csIndex);
+    emit updateUI(csIndex);
 
     csIndex++;
-    QTimer::singleShot(5000, this, &MainWindow::performIteration);
 }
 
 void MainWindow::setLow_UI(bool newVal) {
@@ -253,7 +213,7 @@ void MainWindow::setLow_UI(bool newVal) {
         );
     } else {
         ui->buttonCoherenceLow->setStyleSheet(
-            "background-color:rgb(125,0,0);"
+            "background-color:rgb(25,0,0);"
             "color:rgb(255,255,255);"
         );
     }
@@ -267,7 +227,7 @@ void MainWindow::setMed_UI(bool newVal) {
         );
     } else {
         ui->buttonCoherenceMedium->setStyleSheet(
-            "background-color:rgb(0,0,125);"
+            "background-color:rgb(0,0,25);"
             "color:rgb(255,255,255);"
         );
     }
@@ -281,7 +241,7 @@ void MainWindow::setHigh_UI(bool newVal) {
         );
     } else {
         ui->buttonCoherenceHigh->setStyleSheet(
-            "background-color:rgb(0,125,0);"
+            "background-color:rgb(0,25,0);"
             "color:rgb(255,255,255);"
         );
     }
@@ -293,4 +253,22 @@ void MainWindow::setHCVal(int newVal) {
 
 int MainWindow::getHCVal() {
     return hcVal;
+}
+
+void MainWindow::updateBreathPacer()
+{
+    switch (breathVal) {
+    case true:
+        progressValue += 1;
+        break;
+    case false:
+        progressValue -= 1;
+        break;
+    }
+    progressBar->setValue(progressValue);
+    if (progressValue >= 100) {
+        breathVal = false;
+    } else if (progressValue <= 0) {
+        breathVal = true;
+    }
 }

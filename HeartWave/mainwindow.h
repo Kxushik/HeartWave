@@ -10,7 +10,7 @@
 #include <tuple>
 #include <unistd.h>
 #include <QTimer>
-#include <QElapsedTimer>
+#include <QProgressBar>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -43,11 +43,12 @@ public:
 
 
 signals:
-    void updateCS(int csIndex);
+    void updateUI(int csIndex);
 
 public slots:
-    void onUpdateCS(int csIndex);
+    void onUpdateUI(int csIndex);
     void performIteration();
+    void updateBreathPacer();
 
 
 private:
@@ -68,6 +69,15 @@ private:
     void initialize();
     int csIndex = 0;
     int hcVal = 0;
+    Menu test;
+
+    //Breath pacer stuff
+    QProgressBar *progressBar;
+    QTimer *breathTimer;
+    QTimer *uiTimer;
+    int progressValue;
+    bool breathVal;
+
 
 };
 #endif // MAINWINDOW_H
