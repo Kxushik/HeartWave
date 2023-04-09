@@ -4,6 +4,7 @@
 Session::Session(int init_id, std::vector<std::pair<double, double>> cs_data_set, std::vector<std::pair<double, double>> hrv_data_set){
     id  = init_id;
     coherenceScore = 0;
+    heartrate = 0;
     heartCoherence = 0;
     challengeLevel = 1;
     achievementScore = 0;
@@ -129,14 +130,15 @@ void Session::setChallengeLevel(int newChallengeLevel){
     //
 }
 
-std::tuple<int, double,int,int,double,int,int> Session::display_data(int index){
+std::tuple<int,int,int, double,int,int,double,int,int> Session::display_data(int index){
     //Index of CS within dataset
-    std::tuple<int, double,int,int,double,int,int> data_tuple;
+    std::tuple<int,int,int, double,int,int,double,int,int> data_tuple;
     coherenceScore = std::get<1>(cs_data[index]);
     calculateHC(coherenceScore);
     calculateAS();
     length+=5;
+    heartrate = std::get<1>(hrv_data[index]);
 
-    data_tuple = std::make_tuple(id,coherenceScore,heartCoherence,challengeLevel,achievementScore,length,breathpacer->getTI());
+    data_tuple = std::make_tuple(id,length,heartrate,coherenceScore,heartCoherence,challengeLevel,achievementScore,length,breathpacer->getTI());
     return data_tuple;
 }

@@ -198,17 +198,19 @@ void MainWindow::onUpdateUI(int csIndex) {
 }
 
 void MainWindow::performIteration() {
-    std::tuple<int, double,int,int,double,int,int> data_tuple = test.device->getCurrentSession()->display_data(csIndex);
+    std::tuple<int,int,int, double,int,int,double,int,int> data_tuple = test.device->getCurrentSession()->display_data(csIndex);
     //setHCVal(test.device->getCurrentSession()->display_data(csIndex));
-    int id;
-    double cs;
-    int hc;
-    int cl;
-    double as;
-    int l;
-    int bti;
+    int id; //ID
+    int ts; //TimeStamp
+    int hr; //Heart Rate
+    double cs; //Cohe Score
+    int hc; //Heart coher
+    int cl; //Challenge level
+    double as; //Acheivement score
+    int l; //length
+    int bti; //bti
 
-    std::tie(id,cs,hc,cl,as,l,bti) = data_tuple;
+    std::tie(id,ts,hr,cs,hc,cl,as,l,bti) = data_tuple;
 
     setHCVal(hc);
     qDebug() << qPrintable("id: "+QString::number(id));

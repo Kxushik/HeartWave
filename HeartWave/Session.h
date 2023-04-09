@@ -51,11 +51,12 @@ class Session
         void setChallengeLevel(int);
         Graph* graph;
         BreathPacer* breathpacer;
-        std::tuple<int, double,int,int,double,int,int> display_data(int);
+        std::tuple<int,int,int, double,int,int,double,int,int> display_data(int);
 
     private:
         int id;
         double coherenceScore;
+        int heartrate;
         int heartCoherence;
         int challengeLevel;
         int achievementScore;
