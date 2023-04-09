@@ -1,16 +1,19 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QMainWindow>
+#include <QListWidget>
 #include <QtCore/QCoreApplication>
 #include <QDebug>
-#include <qstring.h>
-#include <QMainWindow>
-#include <Menu.h>
-#include <vector>
-#include <tuple>
-#include <unistd.h>
+#include <QString>
 #include <QTimer>
 #include <QProgressBar>
+
+#include <Menu.h>
+#include <unistd.h>
+
+#include <vector>
+#include <tuple>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -41,6 +44,8 @@ public:
     int getHCVal();
     void setHCVal(int newVal);
 
+    void handleDirection(QString dir); //good
+    void handleOk();
 
 signals:
     void updateUI(int csIndex);
@@ -67,6 +72,7 @@ private:
     };
     std::map<std::string, stringValue> mapStringValues;
     void initialize();
+    void deinitialize();
     int csIndex = 0;
     int hcVal = 0;
     Menu test;
@@ -75,6 +81,7 @@ private:
     QProgressBar *progressBar;
     QTimer *breathTimer;
     QTimer *uiTimer;
+    QListWidget *menuUI;
     int progressValue;
     bool breathVal;
 

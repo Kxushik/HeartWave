@@ -6,8 +6,8 @@ using namespace std;
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
 
     ui->setupUi(this);
-    consoleMenu();
-    initialize();
+//    consoleMenu();
+
 
     connect(this, &MainWindow::updateUI, this, &MainWindow::onUpdateUI);
 
@@ -25,14 +25,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->buttonPower, &QPushButton::clicked, this, &MainWindow::handleButtons);
     connect(ui->buttonBack, &QPushButton::clicked, this, &MainWindow::handleButtons);
 
-}
+    //Initialize important shit
 
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
-
-void MainWindow::initialize() {
     qDebug() << qPrintable("======Initializing Button Mapping======");
 
     mapStringValues["buttonUp"] = stringValue::up;
@@ -46,7 +40,23 @@ void MainWindow::initialize() {
     mapStringValues["buttonPower"] = stringValue::power;
     mapStringValues["buttonBack"] = stringValue::back;
 
-    qDebug() << qPrintable("mapStringValues contains " + QString::number(mapStringValues.size()) + " entries.");
+    //Initialize menu
+    menuUI = ui->listMenu;
+    menuUI->addItems(test.menuList);
+    ui->labelMenu->setText("Menu");
+    menuUI->setCurrentRow(0);
+    //Disable End Session on start
+    QListWidgetItem *item = menuUI->item(1);
+    item->setFlags(item->flags() & ~Qt::ItemIsSelectable);
+
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::initialize() {
 
     qDebug() << qPrintable("======Initializing session values======");
 
@@ -69,7 +79,7 @@ void MainWindow::initialize() {
 //    ui->textCoherence->setText(QString::number(HC));
 //    ui->textLength->setText(QString::number(timer));
 //    ui->textAchievement->setText(QString::number(HRV));
-
+    //Set
     //Breath pacer initialization
     progressBar = ui->breathIndicator;
     progressBar->setMinimum(0);
@@ -88,6 +98,11 @@ void MainWindow::initialize() {
     connect(uiTimer, &QTimer::timeout, this, &MainWindow::performIteration);
     breathTimer->start(breathTimerInterval);
     uiTimer->start(uiTimerInterval);
+}
+
+void MainWindow::deinitialize() {
+    breathTimer->stop();
+    uiTimer->stop();
 }
 
 //Function to test the menu through the console until front-enders connect the UI to our functions...
@@ -109,10 +124,6 @@ void MainWindow::consoleMenu() {
 //    qDebug() << qPrintable("Heart Rate Variability: " + QString::number(test.device->getCurrentSession()->getHRV()));
 
 //    //Settings test, keep so we can see how we can unpack tuples, get<i>test.device->getSettings() also works
-
-    //testing HRV calc
-    test.newSession(1);
-
 }
 void MainWindow::handleButtons() {
     //Get button
@@ -123,9 +134,11 @@ void MainWindow::handleButtons() {
     switch(mapStringValues[buttonName.toStdString()]) {
         case stringValue::up:
             qDebug() << qPrintable("Up function");
+            handleDirection(buttonName);
         break;
         case stringValue::down:
             qDebug() << qPrintable("Down function");
+            handleDirection(buttonName);
         break;
         case stringValue::left:
             qDebug() << qPrintable("Left function");
@@ -135,6 +148,7 @@ void MainWindow::handleButtons() {
         break;
         case stringValue::ok:
             qDebug() << qPrintable("Ok function");
+            handleOk();
         break;
         case stringValue::charge:
             qDebug() << qPrintable("Charge function");
@@ -208,7 +222,7 @@ void MainWindow::performIteration() {
     int l;
     int bti;
 
-    std::tie(id,cs,hc,cl,as,l,bti) = data_tuple;
+    std::tie(id,cs,hc,cl,as,l,bti) = dataTuple;
 
     setHCVal(hc);
     qDebug() << qPrintable("id: "+QString::number(id));
@@ -287,5 +301,61 @@ void MainWindow::updateBreathPacer()
         breathVal = false;
     } else if (progressValue <= 0) {
         breathVal = true;
+    }
+}
+
+void MainWindow::handleDirection(QString buttonName) {
+    int nextIndex = 0;
+    switch(mapStringValues[buttonName.toStdString()]) {
+    case stringValue::up:
+        nextIndex = menuUI->currentRow() - 1;
+        if (nextIndex < 0) {
+            nextIndex = menuUI->count() - 1;
+        }
+        menuUI->setCurrentRow(nextIndex);
+        break;
+    case stringValue::down:
+        nextIndex = menuUI->currentRow() + 1;
+        if (nextIndex > menuUI->count() - 1) {
+            nextIndex = 0;
+        }
+        menuUI->setCurrentRow(nextIndex);
+        break;
+    }
+}
+
+void MainWindow::handleOk() {
+    int index = menuUI->currentRow();
+    int dataset = ui->comboDataset->currentText().toInt();
+    std::string itemName = menuUI->item(index)->text().toStdString();
+    QListWidgetItem *newSession = menuUI->item(0);
+    QListWidgetItem *endSession = menuUI->item(1);
+    QListWidgetItem *currItem = menuUI->currentItem();
+    if (itemName == "New Session" && (newSession->flags() & Qt::ItemIsSelectable)) {
+        qDebug() << qPrintable("Starting session with dataset " + QString::number(dataset) + ".");
+        initialize();
+        test.newSession(dataset);
+        currItem->setFlags(currItem->flags() & ~Qt::ItemIsSelectable);
+        endSession->setFlags(endSession->flags() | Qt::ItemIsSelectable);
+    } else if (itemName == "End Session" && (endSession->flags() & Qt::ItemIsSelectable)) {
+        qDebug() << qPrintable("Ending session.");
+        deinitialize();
+        test.endSession();
+        currItem->setFlags(currItem->flags() & ~Qt::ItemIsSelectable);
+        newSession->setFlags(newSession->flags() | Qt::ItemIsSelectable);
+    } else if (itemName == "Challenge Level") {
+        qDebug() << qPrintable("Setting Challenge Level.");
+
+    } else if (itemName == "Breath Pacer Interval") {
+        qDebug() << qPrintable("Setting Breath Pacer Interval.");
+
+    } else if (itemName == "Show History") {
+        qDebug() << qPrintable("Showing history.");
+
+    } else if (itemName == "Delete Session") {
+        qDebug() << qPrintable("Deleting session.");
+
+    } else if (itemName == "Delete All Sessions" ) {
+        qDebug() << qPrintable("Deleting all sessions.");
     }
 }
