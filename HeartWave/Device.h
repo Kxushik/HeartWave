@@ -27,14 +27,18 @@ class Device
         void initSession(int);
         Session* getCurrentSession();
         void endSession();
-        std::tuple <int,int,int>  getSettings();
+        Settings* getSettings();
         History* getHistory();
         void initializeMockData();
+        double getBattery();
+        void depleteBattery();
+        void chargeBattery();
 
     private:
         int coherence;
         int challenge;
         int nextID;
+        double battery;
         std::vector<std::pair<double, double>> cs_data_set1;
         std::vector<std::pair<double, double>> cs_data_set2;
         std::vector<std::pair<double, double>> cs_data_set3;

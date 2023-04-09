@@ -4,6 +4,7 @@ Device::Device(){
     coherence = -1;
     challenge = -1;
     nextID = 0;
+    battery = 100.00;
     initSession(1);
     dev_history = new History();
     dev_settings  = new Settings();
@@ -44,7 +45,7 @@ History* Device::getHistory(){
     return dev_history;
 }
 
-std::tuple <int,int,int> Device::getSettings(){return dev_settings->getSettings();}
+Settings* Device::getSettings(){return dev_settings;}
 
 void Device::initializeMockData(){
     cs_data_set1= {
@@ -239,6 +240,12 @@ void Device::initializeMockData(){
     //        qDebug() << qPrintable("Time: " + QString::number(pair.first) + ", Coherence Score: " + QString::number(pair.second));
     //    }
 }
+
+//Battery Functions
+void Device::depleteBattery() { battery -= 1; }
+void Device::chargeBattery() { battery = 100.00; }
+double Device::getBattery() { return battery; }
+
 
 
 

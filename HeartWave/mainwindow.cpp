@@ -138,6 +138,7 @@ void MainWindow::handleButtons() {
         break;
         case stringValue::charge:
             qDebug() << qPrintable("Charge function");
+            test.device->chargeBattery();
         break;
         case stringValue::heart:
             qDebug() << qPrintable("Heart function");
@@ -211,7 +212,7 @@ void MainWindow::performIteration() {
     int bti; //bti
 
     std::tie(id,ts,hr,cs,hc,cl,as,l,bti) = data_tuple;
-
+    test.device->depleteBattery();
     setHCVal(hc);
     qDebug() << qPrintable("id: "+QString::number(id));
     qDebug() << qPrintable("CS: "+QString::number(cs));
@@ -220,6 +221,7 @@ void MainWindow::performIteration() {
     qDebug() << qPrintable("as: "+QString::number(as));
     qDebug() << qPrintable("l: "+QString::number(l));
     qDebug() << qPrintable("bti: "+QString::number(bti));
+    qDebug() << qPrintable("Battery Level: " + QString::number(test.device->getBattery()));
     emit updateUI(csIndex);
     csIndex++;
 }
