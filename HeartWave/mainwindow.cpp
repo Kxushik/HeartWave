@@ -160,6 +160,7 @@ void MainWindow::handleButtons() {
         break;
         case stringValue::menu:
             qDebug() << qPrintable("Menu function");
+            handleMenu;
         break;
         case stringValue::power:
             qDebug() << qPrintable("Power function");
