@@ -138,6 +138,8 @@ void MainWindow::handleButtons() {
         break;
         case stringValue::charge:
             qDebug() << qPrintable("Charge function");
+            test.device->chargeBattery();
+            setBattery_UI(test.device->getBattery());
         break;
         case stringValue::heart:
             qDebug() << qPrintable("Heart function");
@@ -204,6 +206,10 @@ void MainWindow::performIteration() {
     int l; //length
     int bti; //bti
 
+    test.device->depleteBattery();
+    qDebug() << qPrintable("Battery Level: "+ QString::number(test.device->getBattery()));
+    setBattery_UI(test.device->getBattery());
+
     if (csIndex < dataSetBound){
         std::tuple<int,int,int, double,int,int,double,int,int,int,int,int> data_tuple = test.device->getCurrentSession()->display_data(csIndex);
 
@@ -222,6 +228,7 @@ void MainWindow::performIteration() {
         qDebug() << qPrintable("lCount: "+QString::number(lcount));
         qDebug() << qPrintable("mCount: "+QString::number(mcount));
         qDebug() << qPrintable("hCount: "+QString::number(hcount));
+
         emit updateUI(csIndex);
         csIndex++;
     }
@@ -231,6 +238,7 @@ void MainWindow::performIteration() {
     }
     else{
         //qDebug() << qPrintable("Reached end of dataset, performing no more iterations");
+
     }
 }
 
