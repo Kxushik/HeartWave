@@ -78,7 +78,7 @@ void MainWindow::initialize() {
     progressValue = 0;
 
     //Can be whatever the setting is
-    int durationInSeconds = 1;
+    int durationInSeconds = test.device->getCurrentSession()->breathpacer->getTI();
     //Duration in milliseconds divided by the number of steps (100)
     int breathTimerInterval = (durationInSeconds * 1000) / 100;
     int uiTimerInterval = 5000;
