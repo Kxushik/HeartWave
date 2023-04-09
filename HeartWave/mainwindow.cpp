@@ -198,7 +198,7 @@ void MainWindow::onUpdateUI(int csIndex) {
 }
 
 void MainWindow::performIteration() {
-    std::tuple<int, double,int,int,double,int,int> data_tuple = test.device->getCurrentSession()->display_data(csIndex);
+    std::tuple<int, double,int,int,double,int,int> dataTuple = test.device->getCurrentSession()->display_data(csIndex);
     //setHCVal(test.device->getCurrentSession()->display_data(csIndex));
     int id;
     double cs;
