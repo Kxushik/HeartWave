@@ -207,7 +207,6 @@ void MainWindow::performIteration() {
     int bti; //bti
 
     test.device->depleteBattery();
-    qDebug() << qPrintable("Battery Level: "+ QString::number(test.device->getBattery()));
     setBattery_UI(test.device->getBattery());
 
     if (csIndex < dataSetBound){
@@ -217,18 +216,6 @@ void MainWindow::performIteration() {
         std::tie(id,ts,hr,cs,hc,cl,as,l,bti,lcount,mcount,hcount) = data_tuple;
 
         setHCVal(hc);
-        qDebug() << qPrintable("Index: " + QString::number(csIndex));
-        qDebug() << qPrintable("id: "+QString::number(id));
-        qDebug() << qPrintable("CS: "+QString::number(cs));
-        qDebug() << qPrintable("hc: "+QString::number(hc));
-        qDebug() << qPrintable("cl: "+QString::number(cl));
-        qDebug() << qPrintable("as: "+QString::number(as));
-        qDebug() << qPrintable("l: "+QString::number(l));
-        qDebug() << qPrintable("bti: "+QString::number(bti));
-        qDebug() << qPrintable("lCount: "+QString::number(lcount));
-        qDebug() << qPrintable("mCount: "+QString::number(mcount));
-        qDebug() << qPrintable("hCount: "+QString::number(hcount));
-
         emit updateUI(csIndex);
         csIndex++;
     }
