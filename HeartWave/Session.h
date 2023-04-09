@@ -51,7 +51,8 @@ class Session
         void setChallengeLevel(int);
         Graph* graph;
         BreathPacer* breathpacer;
-        std::tuple<int,int,int, double,int,int,double,int,int> display_data(int);
+        std::tuple<int,int,int, double,int,int,double,int,int,int,int,int> display_data(int);
+        int getDataSetLength();
 
     private:
         int id;
@@ -62,6 +63,9 @@ class Session
         int achievementScore;
         int HRV;
         int length;
+        int low_count;
+        int med_count;
+        int high_count;
         std::vector<std::pair<double, double>> cs_data;
         std::vector<std::pair<double, double>> hrv_data;
 
