@@ -157,8 +157,14 @@ void Session::summary(){
     lpercent = double(low_count) / double(low_count+med_count+high_count) * 100;
     mpercent = double(med_count) / double(low_count+med_count+high_count) * 100;
     hpercent = double(high_count) / double(low_count+med_count+high_count) * 100;
+    double avgCoherence = achievementScore / double(cs_data.size());
+    qDebug() << qPrintable("Summary");
+    qDebug() << qPrintable("=======");
+    qDebug() << qPrintable("Challenge Level: " + challengeLevel);
     qDebug() << qPrintable("Low Percent: "+QString::number(lpercent)+"%, Medium Percent: "+ QString::number(mpercent)+"%, High Percent: "+QString::number(hpercent) + "%");
-
+    qDebug() << qPrintable("Average Coherence: "+QString::number(avgCoherence));
+    qDebug() << qPrintable("Length of Session (s): "+QString::number(length));
+    qDebug() << qPrintable("Acheivement Score: "+QString::number(achievementScore));
 }
 
 
