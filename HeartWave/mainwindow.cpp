@@ -86,7 +86,6 @@ void MainWindow::initialize() {
     progressBar->setMaximum(100);
     progressBar->setValue(0);
     progressValue = 0;
-
     //Can be whatever the setting is
     int durationInSeconds = test.device->getCurrentSession()->breathpacer->getTI();
     //Duration in milliseconds divided by the number of steps (100)
@@ -351,14 +350,19 @@ void MainWindow::handleOk() {
 
     } else if (itemName == "Breath Pacer Interval") {
         qDebug() << qPrintable("Setting Breath Pacer Interval.");
+        //Once a session has started, the time interval will not update until u start a new session, meaning
+        //you are locked with whatever interval was set
+        test.device->getCurrentSession()->breathpacer->setTI(10);
 
     } else if (itemName == "Show History") {
         qDebug() << qPrintable("Showing history.");
 
     } else if (itemName == "Delete Session") {
         qDebug() << qPrintable("Deleting session.");
+        //Have to somehow grab a session and delete.
 
     } else if (itemName == "Delete All Sessions" ) {
         qDebug() << qPrintable("Deleting all sessions.");
+        test.device->getHistory()->clearSessions();
     }
 }

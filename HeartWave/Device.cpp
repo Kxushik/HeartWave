@@ -5,7 +5,7 @@ Device::Device(){
     challenge = -1;
     nextID = 0;
     battery = 100.00;
-    initSession(1);
+    initSession(1); //Do not remove, default initSession to help create breathpacer obj
     dev_history = new History();
     dev_settings  = new Settings();
     initializeMockData();
@@ -29,8 +29,9 @@ void Device::initSession(int dataset){
         hrv_data_set = hrv_data_set3;
     }
 
-    nextID += 1;
+
     currentSession = new Session(nextID, cs_data_set, hrv_data_set);
+    nextID += 1;
 }
 
 Session* Device::getCurrentSession() {
