@@ -91,7 +91,7 @@ void MainWindow::initialize() {
     int durationInSeconds = test.device->getCurrentSession()->breathpacer->getTI();
     //Duration in milliseconds divided by the number of steps (100)
     int breathTimerInterval = (durationInSeconds * 1000) / 100;
-    int uiTimerInterval = 5000;
+    int uiTimerInterval = 100;
     breathTimer = new QTimer(this);
     uiTimer = new QTimer(this);
     connect(breathTimer, &QTimer::timeout, this, &MainWindow::updateBreathPacer);
@@ -152,6 +152,8 @@ void MainWindow::handleButtons() {
         break;
         case stringValue::charge:
             qDebug() << qPrintable("Charge function");
+            test.device->chargeBattery();
+            setBattery_UI(test.device->getBattery());
         break;
         case stringValue::heart:
             qDebug() << qPrintable("Heart function");
@@ -180,12 +182,7 @@ void MainWindow::setLength_UI(int newVal) {
 void MainWindow::onUpdateUI(int csIndex) {
     // This function will take in a data tuple that contains all the data to be updated on the UI
     //coherence score, heart rate, achievement, etc
-    std::tuple<int,int,double,int> dataTup = make_tuple(1, 2, 3.0, 4);
-    int cs, hr, ac, et;
-    std::tie(cs, hr, ac, et) = dataTup;
-
     int val = getHCVal();
-    qDebug() << qPrintable("HCVal = " + QString::number(val));
 
     //Heart Coherence scores
     switch (val) {
@@ -212,28 +209,38 @@ void MainWindow::onUpdateUI(int csIndex) {
 }
 
 void MainWindow::performIteration() {
-    std::tuple<int, double,int,int,double,int,int> dataTuple = test.device->getCurrentSession()->display_data(csIndex);
-    //setHCVal(test.device->getCurrentSession()->display_data(csIndex));
-    int id;
-    double cs;
-    int hc;
-    int cl;
-    double as;
-    int l;
-    int bti;
+    int dataSetBound = test.device->getCurrentSession()->getDataSetLength();
+    int id; //ID
+    int ts; //TimeStamp
+    int hr; //Heart Rate
+    double cs; //Cohe Score
+    int hc; //Heart coher
+    int cl; //Challenge level
+    double as; //Acheivement score
+    int l; //length
+    int bti; //bti
 
-    std::tie(id,cs,hc,cl,as,l,bti) = dataTuple;
+    test.device->depleteBattery();
+    setBattery_UI(test.device->getBattery());
 
-    setHCVal(hc);
-    qDebug() << qPrintable("id: "+QString::number(id));
-    qDebug() << qPrintable("CS: "+QString::number(cs));
-    qDebug() << qPrintable("hc: "+QString::number(hc));
-    qDebug() << qPrintable("cl: "+QString::number(cl));
-    qDebug() << qPrintable("as: "+QString::number(as));
-    qDebug() << qPrintable("l: "+QString::number(l));
-    qDebug() << qPrintable("bti: "+QString::number(bti));
-    emit updateUI(csIndex);
-    csIndex++;
+    if (csIndex < dataSetBound){
+        std::tuple<int,int,int, double,int,int,double,int,int,int,int,int> data_tuple = test.device->getCurrentSession()->display_data(csIndex);
+
+
+        std::tie(id,ts,hr,cs,hc,cl,as,l,bti,lcount,mcount,hcount) = data_tuple;
+
+        setHCVal(hc);
+        emit updateUI(csIndex);
+        csIndex++;
+    }
+    else if (csIndex == dataSetBound){
+        test.device->getCurrentSession()->summary();
+        csIndex++;
+    }
+    else{
+        //qDebug() << qPrintable("Reached end of dataset, performing no more iterations");
+
+    }
 }
 
 void MainWindow::setLow_UI(bool newVal) {

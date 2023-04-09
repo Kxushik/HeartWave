@@ -4,17 +4,20 @@
 Session::Session(int init_id, std::vector<std::pair<double, double>> cs_data_set, std::vector<std::pair<double, double>> hrv_data_set){
     id  = init_id;
     coherenceScore = 0;
+    heartrate = 0;
     heartCoherence = 0;
     challengeLevel = 1;
     achievementScore = 0;
     length = 0;
 
     HRV = 0;
+    low_count =0;
+    med_count = 0;
+    high_count = 0;
     graph = new Graph();
     breathpacer = new BreathPacer();
     cs_data = cs_data_set;
     hrv_data = hrv_data_set;
-
 }
 
 //OPTIONAL
@@ -61,15 +64,18 @@ int Session::calculateHC(double cs){
     if (cs < lbound){
         //Low Coherence (RED COLOUR)
         heartCoherence = 0;
+        low_count+=1;
 
     }
     else if (cs > ubound){
         //High Coherence (GREEN COLOUR)
         heartCoherence = 2;
+        high_count +=1;
     }
     else{
         //Normal Coherence (BLUE COLOUR)
         heartCoherence = 1;
+        med_count+=1;
     }
 }
 
@@ -129,14 +135,36 @@ void Session::setChallengeLevel(int newChallengeLevel){
     //
 }
 
-std::tuple<int, double,int,int,double,int,int> Session::display_data(int index){
+std::tuple<int,int,int, double,int,int,double,int,int,int,int,int> Session::display_data(int index){
     //Index of CS within dataset
-    std::tuple<int, double,int,int,double,int,int> data_tuple;
+    std::tuple<int,int,int, double,int,int,double,int,int,int,int,int> data_tuple;
     coherenceScore = std::get<1>(cs_data[index]);
     calculateHC(coherenceScore);
     calculateAS();
     length+=5;
+    heartrate = std::get<1>(hrv_data[index]);
 
-    data_tuple = std::make_tuple(id,coherenceScore,heartCoherence,challengeLevel,achievementScore,length,breathpacer->getTI());
+    data_tuple = std::make_tuple(id,length,heartrate,coherenceScore,heartCoherence,challengeLevel,achievementScore,length,breathpacer->getTI(),low_count,med_count,high_count);
     return data_tuple;
 }
+
+int Session::getDataSetLength(){
+    return cs_data.size();
+}
+
+void Session::summary(){
+    double lpercent,mpercent,hpercent;
+    lpercent = double(low_count) / double(low_count+med_count+high_count) * 100;
+    mpercent = double(med_count) / double(low_count+med_count+high_count) * 100;
+    hpercent = double(high_count) / double(low_count+med_count+high_count) * 100;
+    double avgCoherence = achievementScore / double(cs_data.size());
+    qDebug() << qPrintable("Summary");
+    qDebug() << qPrintable("=======");
+    qDebug() << qPrintable(" Challenge Level: " + challengeLevel);
+    qDebug() << qPrintable("Low Percent: "+QString::number(lpercent)+"%, Medium Percent: "+ QString::number(mpercent)+"%, High Percent: "+QString::number(hpercent) + "%");
+    qDebug() << qPrintable("Average Coherence: "+QString::number(avgCoherence));
+    qDebug() << qPrintable("Length of Session (s): "+QString::number(length));
+    qDebug() << qPrintable("Acheivement Score: "+QString::number(achievementScore));
+}
+
+
