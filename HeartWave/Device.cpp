@@ -38,6 +38,7 @@ Session* Device::getCurrentSession() {
 }
 void Device::endSession(){
     qDebug() << qPrintable("Ending Current Session ID " + QString::number(currentSession->getID()));
+    currentSession->summary();
     dev_history->addSession(currentSession);
 }
 
