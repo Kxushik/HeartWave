@@ -233,10 +233,6 @@ void MainWindow::performIteration() {
         emit updateUI(csIndex);
         csIndex++;
     }
-    else if (csIndex == dataSetBound){
-        test.device->getCurrentSession()->summary();
-        csIndex++;
-    }
     else{
         //qDebug() << qPrintable("Reached end of dataset, performing no more iterations");
 
