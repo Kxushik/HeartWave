@@ -77,6 +77,9 @@ private:
     QTimer *uiTimer;
     int progressValue;
     bool breathVal;
+    int lcount; //low count
+    int mcount; //medium count
+    int hcount; //high count
 
 
 };
