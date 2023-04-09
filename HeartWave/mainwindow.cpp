@@ -226,11 +226,7 @@ void MainWindow::performIteration() {
         csIndex++;
     }
     else if (csIndex == dataSetBound){
-        double lpercent,mpercent,hpercent;
-        lpercent = double(lcount) / double(lcount+mcount+hcount) * 100;
-        mpercent = double(mcount) / double(lcount+mcount+hcount) * 100;
-        hpercent = double(hcount) / double(lcount+mcount+hcount) * 100;
-        qDebug() << qPrintable("Low Percent: "+QString::number(lpercent)+"%, Medium Percent: "+ QString::number(mpercent)+"%, High Percent: "+QString::number(hpercent) + "%");
+        test.device->getCurrentSession()->summary();
         csIndex++;
     }
     else{

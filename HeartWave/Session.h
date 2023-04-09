@@ -53,7 +53,7 @@ class Session
         BreathPacer* breathpacer;
         std::tuple<int,int,int, double,int,int,double,int,int,int,int,int> display_data(int);
         int getDataSetLength();
-
+        void summary();
     private:
         int id;
         double coherenceScore;

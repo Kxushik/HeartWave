@@ -151,3 +151,14 @@ std::tuple<int,int,int, double,int,int,double,int,int,int,int,int> Session::disp
 int Session::getDataSetLength(){
     return cs_data.size();
 }
+
+void Session::summary(){
+    double lpercent,mpercent,hpercent;
+    lpercent = double(low_count) / double(low_count+med_count+high_count) * 100;
+    mpercent = double(med_count) / double(low_count+med_count+high_count) * 100;
+    hpercent = double(high_count) / double(low_count+med_count+high_count) * 100;
+    qDebug() << qPrintable("Low Percent: "+QString::number(lpercent)+"%, Medium Percent: "+ QString::number(mpercent)+"%, High Percent: "+QString::number(hpercent) + "%");
+
+}
+
+
