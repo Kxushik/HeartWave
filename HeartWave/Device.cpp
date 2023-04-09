@@ -242,7 +242,7 @@ void Device::initializeMockData(){
 }
 
 //Battery Functions
-void Device::depleteBattery() { battery -= 1; }
+void Device::depleteBattery() {if (battery > 0) {battery -= 1; }}
 void Device::chargeBattery() { battery = 100.00; }
 double Device::getBattery() { return battery; }
 
