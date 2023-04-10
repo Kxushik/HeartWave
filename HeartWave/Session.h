@@ -35,7 +35,7 @@ void setChallengeLevel(int) -> Sets the challenge level
 class Session
 {
     public:
-        Session(int, std::vector<std::pair<double, double>>, std::vector<std::pair<double, double>>);
+        Session(int, std::vector<std::pair<double, double>>, std::vector<std::pair<double, double>>, int);
         void calculateCS(std::vector<std::pair<double, double>>);
         int calculateHC(double);
         void calculateCL();
@@ -54,6 +54,7 @@ class Session
         std::tuple<int,int,int, double,int,int,double,int,int,int,int,int> display_data(int);
         int getDataSetLength();
         void summary();
+        std::tuple<double,double,double,double> getSummary();
     private:
         int id;
         double coherenceScore;

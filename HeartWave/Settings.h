@@ -24,6 +24,9 @@ class Settings
         void charge();
         void factoryReset();
         std::tuple <int,int,int> getSettings();
+
+        //getters
+        int getCL();
     private:
         int timeInterval;
         int breaths;

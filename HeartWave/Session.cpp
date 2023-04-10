@@ -1,12 +1,12 @@
 #include <Session.h>
 #include <QDebug>
 
-Session::Session(int init_id, std::vector<std::pair<double, double>> cs_data_set, std::vector<std::pair<double, double>> hrv_data_set){
+Session::Session(int init_id, std::vector<std::pair<double, double>> cs_data_set, std::vector<std::pair<double, double>> hrv_data_set, int cl){
     id  = init_id;
     coherenceScore = 0;
     heartrate = 0;
     heartCoherence = 0;
-    challengeLevel = 1;
+    challengeLevel = cl;
     achievementScore = 0;
     length = 0;
 
@@ -132,7 +132,7 @@ int Session::getLength(){return length;}
 int Session::getCSDataSize(){return cs_data.size();};
 
 void Session::setChallengeLevel(int newChallengeLevel){
-    //
+    challengeLevel = newChallengeLevel;
 }
 
 std::tuple<int,int,int, double,int,int,double,int,int,int,int,int> Session::display_data(int index){
@@ -167,4 +167,15 @@ void Session::summary(){
     qDebug() << qPrintable("Acheivement Score: "+QString::number(achievementScore));
 }
 
+std::tuple<double,double,double,double> Session::getSummary() {
+    double lpercent,mpercent,hpercent;
+    lpercent = double(low_count) / double(low_count+med_count+high_count) * 100;
+    mpercent = double(med_count) / double(low_count+med_count+high_count) * 100;
+    hpercent = double(high_count) / double(low_count+med_count+high_count) * 100;
+    double avgCoherence = achievementScore / double(cs_data.size());
+
+    std::tuple<double,double,double,double> data_tuple;
+    data_tuple = std::make_tuple(lpercent,mpercent,hpercent,avgCoherence);
+    return data_tuple;
+}
 

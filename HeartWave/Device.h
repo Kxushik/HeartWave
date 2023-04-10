@@ -29,6 +29,7 @@ class Device
         void endSession();
         Settings* getSettings();
         History* getHistory();
+        void setCurrentSession(Session* session);
         void initializeMockData();
         double getBattery();
         void depleteBattery();

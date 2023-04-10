@@ -46,12 +46,15 @@ public:
 
     void handleDirection(QString dir); //good
     void handleOk();
+    void handleMenu();
+    void updateMenu(QStringList list, std::string);
+    void handleBack();
 
 signals:
-    void updateUI(int csIndex);
+    void updateUI(std::tuple<int, int, int, double, int, int, double, int, int, int, int, int> dataTuple);
 
 public slots:
-    void onUpdateUI(int csIndex);
+    void onUpdateUI(std::tuple<int, int, int, double, int, int, double, int, int, int, int, int> dataTuple);
     void performIteration();
     void updateBreathPacer();
 
@@ -73,7 +76,7 @@ private:
     std::map<std::string, stringValue> mapStringValues;
     void initialize();
     void deinitialize();
-    int csIndex = 0;
+    int index = 0;
     int hcVal = 0;
     Menu test;
 

@@ -48,6 +48,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //Disable End Session on start
     QListWidgetItem *item = menuUI->item(1);
     item->setFlags(item->flags() & ~Qt::ItemIsSelectable);
+    //Disable menu on start
+    menuUI->setVisible(false);
+    ui->labelMenu->setVisible(false);
 
 }
 
@@ -59,6 +62,16 @@ MainWindow::~MainWindow()
 void MainWindow::initialize() {
 
     qDebug() << qPrintable("======Initializing session values======");
+//    int id; //ID
+//    int ts; //TimeStamp
+//    int hr; //Heart Rate
+//    double cs; //Cohe Score
+//    int hc; //Heart coher
+//    int cl; //Challenge level
+//    double as; //Acheivement score
+//    int l; //length
+//    int bti; //bti
+
 
     //Ask how to fill in the constructor cuz this creates two new objects
 //    Menu test;
@@ -160,13 +173,14 @@ void MainWindow::handleButtons() {
         break;
         case stringValue::menu:
             qDebug() << qPrintable("Menu function");
-            handleMenu;
+            handleMenu();
         break;
         case stringValue::power:
             qDebug() << qPrintable("Power function");
         break;
         case stringValue::back:
             qDebug() << qPrintable("Back function");
+            handleBack();
         break;
     }
 
@@ -180,13 +194,23 @@ void MainWindow::setLength_UI(int newVal) {
     ui->textLength->setText(QString::number(newVal));
 }
 
-void MainWindow::onUpdateUI(int csIndex) {
+void MainWindow::onUpdateUI(std::tuple<int, int, int, double, int, int, double, int, int, int, int, int> dataTuple) {
     // This function will take in a data tuple that contains all the data to be updated on the UI
     //coherence score, heart rate, achievement, etc
-    int val = getHCVal();
+    int id; //ID
+    int ts; //TimeStamp
+    int hr; //Heart Rate
+    double cs; //Cohe Score
+    int hc; //Heart coher
+    int cl; //Challenge level
+    double as; //Acheivement score
+    int l; //length
+    int bti; //bti
 
-    //Heart Coherence scores
-    switch (val) {
+    std::tie(id, ts, hr, cs, hc, cl, as, l, bti, lcount, mcount, hcount) = dataTuple;
+
+    //Heart Coherence
+    switch (hc) {
     case 0:
         setLow_UI(true);
         setMed_UI(false);
@@ -207,35 +231,31 @@ void MainWindow::onUpdateUI(int csIndex) {
         break;
     }
 
+    //Heart Coherence Score
+    ui->textCoherence->setText(QString::number(cs));
+    //Challenge Level
+    ui->textChallengeLevel->setText(QString::number(cl));
+    //Acheivement Score
+    ui->textAchievement->setText(QString::number(as));
+    //Length
+    ui->textLength->setText(QString::number(l));
 }
 
 void MainWindow::performIteration() {
     int dataSetBound = test.device->getCurrentSession()->getDataSetLength();
-    int id; //ID
-    int ts; //TimeStamp
-    int hr; //Heart Rate
-    double cs; //Cohe Score
-    int hc; //Heart coher
-    int cl; //Challenge level
-    double as; //Acheivement score
-    int l; //length
-    int bti; //bti
-
+    qDebug() << qPrintable("index = " + QString::number(index) + " bound = " + QString::number(dataSetBound));
     test.device->depleteBattery();
     setBattery_UI(test.device->getBattery());
 
-    if (csIndex < dataSetBound){
-        std::tuple<int,int,int, double,int,int,double,int,int,int,int,int> data_tuple = test.device->getCurrentSession()->display_data(csIndex);
+    if (index < dataSetBound){
+        std::tuple<int, int, int, double, int, int, double, int, int, int, int, int> dataTuple = test.device->getCurrentSession()->display_data(index);
 
-
-        std::tie(id,ts,hr,cs,hc,cl,as,l,bti,lcount,mcount,hcount) = data_tuple;
-
-        setHCVal(hc);
-        emit updateUI(csIndex);
-        csIndex++;
+//        setHCVal(hc);
+        emit updateUI(dataTuple);
+        index++;
     }
     else{
-        //qDebug() << qPrintable("Reached end of dataset, performing no more iterations");
+        qDebug() << qPrintable("Reached end of dataset, performing no more iterations");
 
     }
 }
@@ -332,29 +352,43 @@ void MainWindow::handleOk() {
     int index = menuUI->currentRow();
     int dataset = ui->comboDataset->currentText().toInt();
     std::string itemName = menuUI->item(index)->text().toStdString();
+    std::string menuName = ui->labelMenu->text().toStdString();
+    qDebug() << qPrintable("Current menu name: " + QString::fromStdString(menuName));
     QListWidgetItem *newSession = menuUI->item(0);
     QListWidgetItem *endSession = menuUI->item(1);
     QListWidgetItem *currItem = menuUI->currentItem();
     if (itemName == "New Session" && (newSession->flags() & Qt::ItemIsSelectable)) {
         qDebug() << qPrintable("Starting session with dataset " + QString::number(dataset) + ".");
+        this->index = 0;
         initialize();
         test.newSession(dataset);
         currItem->setFlags(currItem->flags() & ~Qt::ItemIsSelectable);
         endSession->setFlags(endSession->flags() | Qt::ItemIsSelectable);
     } else if (itemName == "End Session" && (endSession->flags() & Qt::ItemIsSelectable)) {
-        qDebug() << qPrintable("Ending session.");
+        qDebug() << qPrintable("Ending session. Index = " + QString::number(index) + " Index2 = " + QString::number(this->index));
         deinitialize();
+        this->index = 0;
         test.endSession();
         currItem->setFlags(currItem->flags() & ~Qt::ItemIsSelectable);
         newSession->setFlags(newSession->flags() | Qt::ItemIsSelectable);
     } else if (itemName == "Challenge Level") {
         qDebug() << qPrintable("Setting Challenge Level.");
-
+        QStringList challengeLevels = { "1", "2", "3", "4" };
+        updateMenu(challengeLevels, "Challenge Levels");
     } else if (itemName == "Breath Pacer Interval") {
         qDebug() << qPrintable("Setting Breath Pacer Interval.");
+        QStringList breathIntervals = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"};
+        updateMenu(breathIntervals, "Breath Pacer Interval");
 
     } else if (itemName == "Show History") {
         qDebug() << qPrintable("Showing history.");
+        QStringList history = {};
+        for (Session *s : test.device->getHistory()->getSessions()){
+//            QString session = "Session #" + QString::number(s->getID());
+            QString session = QString::number(s->getID());
+            history.append(session);
+        }
+        updateMenu(history, "Show History");
 
     } else if (itemName == "Delete Session") {
         qDebug() << qPrintable("Deleting session.");
@@ -362,4 +396,39 @@ void MainWindow::handleOk() {
     } else if (itemName == "Delete All Sessions" ) {
         qDebug() << qPrintable("Deleting all sessions.");
     }
+
+    //Handle submenu stuff - Challenge Level, "Breath Pacer Interval", "Show History","Delete Session", "Delete All Sessions"
+    if (menuName == "Challenge Levels") {
+        qDebug() << qPrintable("Setting Challenge Level to " + QString::fromStdString(itemName) + ".");
+        test.device->getSettings()->adjustChallenge(stoi(itemName));
+        updateMenu(test.menuList, "Menu");
+    } else if (menuName == "Breath Pacer Interval") {
+        qDebug() << qPrintable("Setting Breath Pacer Interval to " + QString::fromStdString(itemName) + ".");
+        test.device->getCurrentSession()->breathpacer->setTI(stoi(itemName));
+        updateMenu(test.menuList, "Menu");
+    } else if (menuName == "Show History") {
+        qDebug() << qPrintable("Displaying " + QString::fromStdString(itemName) + ".");
+//        test.device->setCurrentSession(test.device->getHistory()->loadSession(stoi(itemName)));
+//        onUpdateUI(test.device->getCurrentSession()->display_data(index));
+    }
+
 }
+
+void MainWindow::updateMenu(QStringList list, std::string title) {
+    menuUI = ui->listMenu;
+    menuUI->clear();
+    menuUI->addItems(list);
+    ui->labelMenu->setText(QString::fromStdString(title));
+}
+
+void MainWindow::handleMenu() {
+    ui->listMenu->setVisible(!ui->listMenu->isVisible());
+    ui->labelMenu->setVisible(!ui->labelMenu->isVisible());
+    ui->listMenu->setCurrentRow(0);
+}
+
+void MainWindow::handleBack() {
+    updateMenu(test.menuList, "Menu");
+}
+
+

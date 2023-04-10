@@ -5,9 +5,9 @@ Device::Device(){
     challenge = -1;
     nextID = 0;
     battery = 100.00;
-    initSession(1);
     dev_history = new History();
     dev_settings  = new Settings();
+    initSession(1);
     initializeMockData();
 
 }
@@ -29,8 +29,8 @@ void Device::initSession(int dataset){
         hrv_data_set = hrv_data_set3;
     }
 
+    currentSession = new Session(nextID, cs_data_set, hrv_data_set, dev_settings->getCL());
     nextID += 1;
-    currentSession = new Session(nextID, cs_data_set, hrv_data_set);
 }
 
 Session* Device::getCurrentSession() {
@@ -246,6 +246,10 @@ void Device::initializeMockData(){
 void Device::depleteBattery() {if (battery > 0) {battery -= 1; }}
 void Device::chargeBattery() { battery = 100.00; }
 double Device::getBattery() { return battery; }
+
+void Device::setCurrentSession(Session *session) {
+    currentSession = session;
+}
 
 
 

@@ -23,8 +23,6 @@ void Settings::charge(){
 
 void Settings::factoryReset(){
     //Clear History, and Settings
-    timeInterval = 0;
-    breaths = 0;
     challengeLevel = 1;
     //Might now need this idk? Mainwindow can call some shit
 }
@@ -32,6 +30,10 @@ void Settings::factoryReset(){
 std::tuple<int,int,int> Settings::getSettings(){
     std::tuple <int,int,int> settings = std::make_tuple(timeInterval,breaths,challengeLevel);
     return settings;
+}
+
+int Settings::getCL() {
+   return challengeLevel;
 }
 
 
