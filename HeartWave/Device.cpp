@@ -27,13 +27,7 @@ void Device::initSession(int dataset){
         cs_data_set = cs_data_set3;
         hrv_data_set = hrv_data_set3;
     }
-
-<<<<<<< HEAD
     currentSession = new Session(nextID, cs_data_set, hrv_data_set, dev_settings->getCL());
-=======
-
-    currentSession = new Session(nextID, cs_data_set, hrv_data_set);
->>>>>>> 671af192594e6809355e2cf68bfe9a52b1ce04c6
     nextID += 1;
 }
 
