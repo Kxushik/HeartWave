@@ -27,6 +27,7 @@ class Settings
 
         //getters
         int getCL();
+        int getTI();
     private:
         int timeInterval;
         int breaths;

@@ -54,7 +54,9 @@ class Session
         std::tuple<int,int,int, double,int,int,double,int,int,int,int,int> display_data(int);
         int getDataSetLength();
         void summary();
-        std::tuple<double,double,double,double> getSummary();
+        std::tuple<double,double,double,double,int,int,double> getSummary();
+        std::vector<std::pair<double, double>> getCSData();
+        std::vector<std::pair<double, double>> getHRVData();
     private:
         int id;
         double coherenceScore;

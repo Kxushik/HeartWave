@@ -167,15 +167,24 @@ void Session::summary(){
     qDebug() << qPrintable("Acheivement Score: "+QString::number(achievementScore));
 }
 
-std::tuple<double,double,double,double> Session::getSummary() {
+std::tuple<double,double,double,double,int,int,double> Session::getSummary() {
     double lpercent,mpercent,hpercent;
     lpercent = double(low_count) / double(low_count+med_count+high_count) * 100;
     mpercent = double(med_count) / double(low_count+med_count+high_count) * 100;
     hpercent = double(high_count) / double(low_count+med_count+high_count) * 100;
     double avgCoherence = achievementScore / double(cs_data.size());
 
-    std::tuple<double,double,double,double> data_tuple;
-    data_tuple = std::make_tuple(lpercent,mpercent,hpercent,avgCoherence);
+    //Low coherence, med coherence, high coherence, avg coherence, challengeLevel, length, achievement score
+    std::tuple<double,double,double,double,int,int,double> data_tuple;
+    data_tuple = std::make_tuple(lpercent,mpercent,hpercent,avgCoherence,challengeLevel,length,achievementScore);
     return data_tuple;
+}
+
+std::vector<std::pair<double, double>> Session::getCSData() {
+    return cs_data;
+}
+
+std::vector<std::pair<double, double>> Session::getHRVData() {
+    return hrv_data;
 }
 

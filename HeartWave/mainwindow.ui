@@ -936,7 +936,7 @@ border-radius: 20px;
        <string notr="true">background-color:rgb(0,255,0)</string>
       </property>
      </widget>
-     <widget class="QListWidget" name="listMenu">
+     <widget class="QWidget" name="widgetSummary" native="true">
       <property name="geometry">
        <rect>
         <x>660</x>
@@ -946,11 +946,209 @@ border-radius: 20px;
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color:rgb(125,125,125);</string>
+       <string notr="true">background-color:rgb(125,125,125)</string>
       </property>
-      <property name="itemAlignment">
-       <set>Qt::AlignHCenter</set>
-      </property>
+      <widget class="QLabel" name="label_13">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>91</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Challenge Level:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_14">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>91</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Low Percent:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_15">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>50</y>
+         <width>101</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Medium Percent:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_16">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>70</y>
+         <width>101</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>High Percent:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_17">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>90</y>
+         <width>121</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Average Coherence:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_18">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>110</y>
+         <width>121</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Length of Session:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_19">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>130</y>
+         <width>121</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Acheivement Score:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelSummaryCL">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>10</y>
+         <width>54</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelSummaryLC">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>30</y>
+         <width>54</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>0%</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelSummaryMC">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>50</y>
+         <width>54</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>0%</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelSummaryHC">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>70</y>
+         <width>54</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>0%</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelSummaryAC">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>90</y>
+         <width>54</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelSummaryL">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>110</y>
+         <width>54</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelSummaryAS">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>130</y>
+         <width>54</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>0</string>
+       </property>
+      </widget>
+      <widget class="QListWidget" name="listMenu">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>341</width>
+         <height>311</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:rgb(125,125,125);</string>
+       </property>
+       <property name="itemAlignment">
+        <set>Qt::AlignHCenter</set>
+       </property>
+      </widget>
      </widget>
      <widget class="QLabel" name="labelMenu">
       <property name="geometry">
@@ -970,7 +1168,7 @@ border-radius: 20px;
        <string notr="true">background-color:rgb(125,125,125);</string>
       </property>
       <property name="text">
-       <string>Menu</string>
+       <string>Summary</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>

@@ -43,14 +43,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //Initialize menu
     menuUI = ui->listMenu;
     menuUI->addItems(test.menuList);
-    ui->labelMenu->setText("Menu");
+    ui->labelMenu->setText("Summary");
     menuUI->setCurrentRow(0);
     //Disable End Session on start
     QListWidgetItem *item = menuUI->item(1);
     item->setFlags(item->flags() & ~Qt::ItemIsSelectable);
     //Disable menu on start
     menuUI->setVisible(false);
-    ui->labelMenu->setVisible(false);
+//    ui->labelMenu->setVisible(false);
 
 }
 
@@ -100,10 +100,13 @@ void MainWindow::initialize() {
     progressBar->setValue(0);
     progressValue = 0;
     //Can be whatever the setting is
-    int durationInSeconds = test.device->getCurrentSession()->breathpacer->getTI();
+//    int durationInSeconds = test.device->getCurrentSession()->breathpacer->getTI();
+    int durationInSeconds = test.device->getSettings()->getTI();
+    qDebug() << qPrintable("duration in seconds = " + QString::number(durationInSeconds));
     //Duration in milliseconds divided by the number of steps (100)
     int breathTimerInterval = (durationInSeconds * 1000) / 100;
-    int uiTimerInterval = 100;
+//    int breathTimerInterval = durationInSeconds / 100;
+    int uiTimerInterval = 5000;
     breathTimer = new QTimer(this);
     uiTimer = new QTimer(this);
     connect(breathTimer, &QTimer::timeout, this, &MainWindow::updateBreathPacer);
@@ -301,14 +304,6 @@ void MainWindow::setHigh_UI(bool newVal) {
     }
 }
 
-void MainWindow::setHCVal(int newVal) {
-    hcVal = newVal;
-}
-
-int MainWindow::getHCVal() {
-    return hcVal;
-}
-
 void MainWindow::updateBreathPacer()
 {
     switch (breathVal) {
@@ -359,6 +354,8 @@ void MainWindow::handleOk() {
     if (itemName == "New Session" && (newSession->flags() & Qt::ItemIsSelectable)) {
         qDebug() << qPrintable("Starting session with dataset " + QString::number(dataset) + ".");
         this->index = 0;
+        std::tuple<double,double,double,double,int,int,double> dataTuple = make_tuple(0,0,0,0,0,0,0);
+        handleSummary(dataTuple);
         initialize();
         test.newSession(dataset);
         currItem->setFlags(currItem->flags() & ~Qt::ItemIsSelectable);
@@ -367,50 +364,72 @@ void MainWindow::handleOk() {
         qDebug() << qPrintable("Ending session. Index = " + QString::number(index) + " Index2 = " + QString::number(this->index));
         deinitialize();
         this->index = 0;
+        std::tuple<double,double,double,double,int,int,double> dataTuple = test.device->getCurrentSession()->getSummary();
+        handleSummary(dataTuple);
         test.endSession();
         currItem->setFlags(currItem->flags() & ~Qt::ItemIsSelectable);
         newSession->setFlags(newSession->flags() | Qt::ItemIsSelectable);
-    } else if (itemName == "Challenge Level") {
+    } else if (itemName == "Challenge Level") { //Done
         qDebug() << qPrintable("Setting Challenge Level.");
         QStringList challengeLevels = { "1", "2", "3", "4" };
         updateMenu(challengeLevels, "Challenge Levels");
-    } else if (itemName == "Breath Pacer Interval") {
+    } else if (itemName == "Breath Pacer Interval") { //Done
         qDebug() << qPrintable("Setting Breath Pacer Interval.");
         QStringList breathIntervals = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"};
         updateMenu(breathIntervals, "Breath Pacer Interval");
-
-    } else if (itemName == "Show History") {
+    } else if (itemName == "Show History") { //Done
         qDebug() << qPrintable("Showing history.");
         QStringList history = {};
         for (Session *s : test.device->getHistory()->getSessions()){
-//            QString session = "Session #" + QString::number(s->getID());
             QString session = QString::number(s->getID());
             history.append(session);
         }
         updateMenu(history, "Show History");
-
     } else if (itemName == "Delete Session") {
-        qDebug() << qPrintable("Deleting session.");
-        //Have to somehow grab a session and delete.
+        qDebug() << qPrintable("Showing sessions to be deleted.");
+        QStringList history = {};
+        for (Session *s : test.device->getHistory()->getSessions()){
+            QString session = QString::number(s->getID());
+            history.append(session);
+        }
+        updateMenu(history, "Delete a Session");
 
     } else if (itemName == "Delete All Sessions" ) {
         qDebug() << qPrintable("Deleting all sessions.");
         test.device->getHistory()->clearSessions();
+        handleBack();
+    } else if (itemName == "Factory Reset") {
+        qDebug() << qPrintable("Showing cock.");
+        test.device->getSettings()->factoryReset();
+        test.device->getHistory()->clearSessions();
+        std::tuple<double,double,double,double,int,int,double> blankSummary = make_tuple(0,0,0,0,0,0,0);
+        std::tuple<int, int, int, double, int, int, double, int, int, int, int, int> blankUI = make_tuple(0,0,0,0,0,0,0,0,0,0,0,0);
+        handleSummary(blankSummary);
+        onUpdateUI(blankUI);
+        setLow_UI(false);
+        setMed_UI(false);
+        setHigh_UI(false);
     }
 
     //Handle submenu stuff - Challenge Level, "Breath Pacer Interval", "Show History","Delete Session", "Delete All Sessions"
-    if (menuName == "Challenge Levels") {
+    if (menuName == "Challenge Levels") { //done
         qDebug() << qPrintable("Setting Challenge Level to " + QString::fromStdString(itemName) + ".");
         test.device->getSettings()->adjustChallenge(stoi(itemName));
-        updateMenu(test.menuList, "Menu");
-    } else if (menuName == "Breath Pacer Interval") {
+        handleBack();
+    } else if (menuName == "Breath Pacer Interval") { //done
         qDebug() << qPrintable("Setting Breath Pacer Interval to " + QString::fromStdString(itemName) + ".");
-        test.device->getCurrentSession()->breathpacer->setTI(stoi(itemName));
-        updateMenu(test.menuList, "Menu");
-    } else if (menuName == "Show History") {
-        qDebug() << qPrintable("Displaying " + QString::fromStdString(itemName) + ".");
-//        test.device->setCurrentSession(test.device->getHistory()->loadSession(stoi(itemName)));
-//        onUpdateUI(test.device->getCurrentSession()->display_data(index));
+//        test.device->getCurrentSession()->breathpacer->setTI(stoi(itemName));
+        test.device->getSettings()->adjustBreathPacer(stoi(itemName), 0);
+        handleBack();
+    } else if (menuName == "Show History") { //done
+        qDebug() << qPrintable("Displaying session " + QString::fromStdString(itemName) + ".");
+        test.device->setCurrentSession(test.device->getHistory()->loadSession(stoi(itemName) - 1));
+        handleSummary(test.device->getCurrentSession()->getSummary());
+        handleBack();
+    } else if (menuName == "Delete a Session") {
+        qDebug() << qPrintable("Deleting session " + QString::fromStdString(itemName) + ".");
+        test.device->getHistory()->removeSession(stoi(itemName));
+        handleBack();
     }
 
 }
@@ -424,12 +443,38 @@ void MainWindow::updateMenu(QStringList list, std::string title) {
 
 void MainWindow::handleMenu() {
     ui->listMenu->setVisible(!ui->listMenu->isVisible());
-    ui->labelMenu->setVisible(!ui->labelMenu->isVisible());
+    if (ui->listMenu->isVisible()) {
+        ui->labelMenu->setText("Menu");
+    } else {
+        ui->labelMenu->setText("Summary");
+    }
     ui->listMenu->setCurrentRow(0);
 }
 
 void MainWindow::handleBack() {
     updateMenu(test.menuList, "Menu");
+}
+
+void MainWindow::handleSummary(std::tuple<double,double,double,double,int,int,double> dataTuple) {
+    double lc; //Low Coherence
+    double mc; //Med Coherence
+    double hc; //High Coherence
+    double ac; //Average Coherence
+    int cl; //Challenge Level
+    int l; //Length
+    double as; //Acheivement Score
+
+
+    std::tie(lc, mc, hc, ac, cl, l, as) = dataTuple;
+
+    ui->labelSummaryLC->setText(QString::number(lc) + "%");
+    ui->labelSummaryMC->setText(QString::number(mc) + "%");
+    ui->labelSummaryHC->setText(QString::number(hc) + "%");
+    ui->labelSummaryAC->setText(QString::number(ac));
+    ui->labelSummaryCL->setText(QString::number(cl));
+    ui->labelSummaryL->setText(QString::number(l));
+    ui->labelSummaryAS->setText(QString::number(as));
+
 }
 
 

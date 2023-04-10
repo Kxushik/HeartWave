@@ -4,7 +4,7 @@
 Menu::Menu(){
     device = new Device();
     screen = new Screen();
-    menuList = QStringList{ "New Session", "End Session", "Challenge Level", "Breath Pacer Interval", "Show History", "Delete Session", "Delete All Sessions" };
+    menuList = QStringList{ "New Session", "End Session", "Challenge Level", "Breath Pacer Interval", "Show History", "Delete Session", "Delete All Sessions", "Factory Reset" };
 }
 
 void Menu::display(){

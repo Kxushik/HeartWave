@@ -49,6 +49,7 @@ public:
     void handleMenu();
     void updateMenu(QStringList list, std::string);
     void handleBack();
+    void handleSummary(std::tuple<double,double,double,double,int,int,double> dataTuple);
 
 signals:
     void updateUI(std::tuple<int, int, int, double, int, int, double, int, int, int, int, int> dataTuple);
