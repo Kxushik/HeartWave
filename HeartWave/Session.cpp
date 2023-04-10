@@ -160,7 +160,7 @@ void Session::summary(){
     double avgCoherence = achievementScore / double(cs_data.size());
     qDebug() << qPrintable("Summary");
     qDebug() << qPrintable("=======");
-    qDebug() << qPrintable(" Challenge Level: " + QString::number(challengeLevel));
+    qDebug() << qPrintable("Challenge Level: " + QString::number(challengeLevel));
     qDebug() << qPrintable("Low Percent: "+QString::number(lpercent)+"%, Medium Percent: "+ QString::number(mpercent)+"%, High Percent: "+QString::number(hpercent) + "%");
     qDebug() << qPrintable("Average Coherence: "+QString::number(avgCoherence));
     qDebug() << qPrintable("Length of Session (s): "+QString::number(length));

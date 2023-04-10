@@ -99,7 +99,6 @@ void MainWindow::initialize() {
     progressBar->setMaximum(100);
     progressBar->setValue(0);
     progressValue = 0;
-
     //Can be whatever the setting is
     int durationInSeconds = test.device->getCurrentSession()->breathpacer->getTI();
     //Duration in milliseconds divided by the number of steps (100)
@@ -392,9 +391,11 @@ void MainWindow::handleOk() {
 
     } else if (itemName == "Delete Session") {
         qDebug() << qPrintable("Deleting session.");
+        //Have to somehow grab a session and delete.
 
     } else if (itemName == "Delete All Sessions" ) {
         qDebug() << qPrintable("Deleting all sessions.");
+        test.device->getHistory()->clearSessions();
     }
 
     //Handle submenu stuff - Challenge Level, "Breath Pacer Interval", "Show History","Delete Session", "Delete All Sessions"
