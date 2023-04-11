@@ -34,12 +34,15 @@ class Device
         double getBattery();
         void depleteBattery();
         void chargeBattery();
+        bool getHeartContact();
+        void setHeartContact();
 
     private:
         int coherence;
         int challenge;
         int nextID;
         double battery;
+        bool heartContact;
         std::vector<std::pair<double, double>> cs_data_set1;
         std::vector<std::pair<double, double>> cs_data_set2;
         std::vector<std::pair<double, double>> cs_data_set3;

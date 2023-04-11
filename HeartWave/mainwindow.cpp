@@ -165,6 +165,10 @@ void MainWindow::handleButtons() {
         break;
         case stringValue::heart:
             qDebug() << qPrintable("Heart function");
+            //Should set heartcontact to true or false
+            //If false disable functionality from the device...
+            test.device->setHeartContact();
+            qDebug() << qPrintable(QString::number(test.device->getHeartContact()));
         break;
         case stringValue::menu:
             qDebug() << qPrintable("Menu function");
@@ -239,20 +243,33 @@ void MainWindow::onUpdateUI(std::tuple<int, int, int, double, int, int, double, 
 void MainWindow::performIteration() {
     int dataSetBound = test.device->getCurrentSession()->getDataSetLength();
     qDebug() << qPrintable("index = " + QString::number(index) + " bound = " + QString::number(dataSetBound));
-    test.device->depleteBattery();
     setBattery_UI(test.device->getBattery());
+    if (test.device->getBattery() == 0.00) {
+            //Dead battery stuff goes here...
+            qDebug() << qPrintable("Battery is dead, device cannot function, please recharge...");
+        }
+    if (test.device->getHeartContact() == false) {
+        //No heart contact stuff goes here...
+        qDebug() << qPrintable("Heart contact missing, please reconnect");
+        }
+    //If battery and heart sensor are not set to 0 update the function...
+    if ((test.device->getBattery() != 0) && (test.device->getHeartContact() == true)) {
+        test.device->depleteBattery();
+        if (index < dataSetBound){
+            std::tuple<int, int, int, double, int, int, double, int, int, int, int, int> dataTuple = test.device->getCurrentSession()->display_data(index);
 
-    if (index < dataSetBound){
-        std::tuple<int, int, int, double, int, int, double, int, int, int, int, int> dataTuple = test.device->getCurrentSession()->display_data(index);
+            emit updateUI(dataTuple);
+            index++;
+        }
+        else{
+            qDebug() << qPrintable("Reached end of dataset, performing no more iterations");
 
-        emit updateUI(dataTuple);
-        index++;
+        }
     }
-    else{
-        qDebug() << qPrintable("Reached end of dataset, performing no more iterations");
 
-    }
 }
+
+
 
 void MainWindow::setLow_UI(bool newVal) {
     if (newVal) {
