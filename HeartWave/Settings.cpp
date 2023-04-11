@@ -17,10 +17,6 @@ void Settings::adjustChallenge(int chal){
     challengeLevel = chal;
 }
 
-void Settings::charge(){
-    //Confusion
-}
-
 void Settings::factoryReset(){
     //Clear History, and Settings
     challengeLevel = 1;

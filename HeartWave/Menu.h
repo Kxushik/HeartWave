@@ -24,7 +24,6 @@ class Menu
 {
 public:
     Menu();
-    void display();
     void newSession(int);
     void endSession();
     void showHistory();
