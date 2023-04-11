@@ -920,7 +920,7 @@ border-radius: 20px;
      <property name="styleSheet">
       <string notr="true">background-color:rgb(255,255,255)</string>
      </property>
-     <widget class="QWidget" name="widgetGraph" native="true">
+     <widget class="QCustomPlot" name="widgetGraph" native="true">
       <property name="enabled">
        <bool>true</bool>
       </property>
@@ -1178,6 +1178,14 @@ border-radius: 20px;
    </widget>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

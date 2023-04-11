@@ -8,6 +8,8 @@
 #include <QString>
 #include <QTimer>
 #include <QProgressBar>
+#include <QVector>
+
 
 #include <Menu.h>
 #include <unistd.h>
@@ -51,6 +53,12 @@ public:
     void handleBack();
     void handleSummary(std::tuple<double,double,double,double,int,int,double> dataTuple);
 
+    //graph display
+    void addCoordinates(double, double, int);
+    void displaySessionGraph(std::vector<std::pair<double, double>>);
+    void graphColor(int);
+    void initializeGraphs();
+
 signals:
     void updateUI(std::tuple<int, int, int, double, int, int, double, int, int, int, int, int> dataTuple);
 
@@ -91,6 +99,8 @@ private:
     int lcount; //low count
     int mcount; //medium count
     int hcount; //high count
+    double yMax; //graph range
+    double xMax; //graph range
 
 
 };

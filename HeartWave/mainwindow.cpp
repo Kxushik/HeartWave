@@ -51,6 +51,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //Disable menu on start
     menuUI->setVisible(false);
 //    ui->labelMenu->setVisible(false);
+    initializeGraphs();
+
 
 }
 
@@ -99,6 +101,9 @@ void MainWindow::initialize() {
     progressBar->setMaximum(100);
     progressBar->setValue(0);
     progressValue = 0;
+    yMax = 0;
+    xMax =0;
+    //ui->widgetGraph->graph(0)->data()->clear();
     //Can be whatever the setting is
 //    int durationInSeconds = test.device->getCurrentSession()->breathpacer->getTI();
     int durationInSeconds = test.device->getSettings()->getTI();
@@ -106,7 +111,7 @@ void MainWindow::initialize() {
     //Duration in milliseconds divided by the number of steps (100)
     int breathTimerInterval = (durationInSeconds * 1000) / 100;
 //    int breathTimerInterval = durationInSeconds / 100;
-    int uiTimerInterval = 5000;
+    int uiTimerInterval = 500; //change this later
     breathTimer = new QTimer(this);
     uiTimer = new QTimer(this);
     connect(breathTimer, &QTimer::timeout, this, &MainWindow::updateBreathPacer);
@@ -241,6 +246,12 @@ void MainWindow::onUpdateUI(std::tuple<int, int, int, double, int, int, double, 
     ui->textAchievement->setText(QString::number(as));
     //Length
     ui->textLength->setText(QString::number(l));
+
+    //Graph
+    if (!ui->widgetGraph->isVisible()){
+        ui->widgetGraph->setVisible(true);
+    }
+    addCoordinates(ts, hr, hc);
 }
 
 void MainWindow::performIteration() {
@@ -354,6 +365,11 @@ void MainWindow::handleOk() {
     if (itemName == "New Session" && (newSession->flags() & Qt::ItemIsSelectable)) {
         qDebug() << qPrintable("Starting session with dataset " + QString::number(dataset) + ".");
         this->index = 0;
+        yMax = 0;
+        xMax = 0;
+        ui->widgetGraph->graph(0)->data()->clear();
+        ui->widgetGraph->graph(0)->rescaleAxes(true);
+        ui->widgetGraph->replot();
         std::tuple<double,double,double,double,int,int,double> dataTuple = make_tuple(0,0,0,0,0,0,0);
         handleSummary(dataTuple);
         initialize();
@@ -364,6 +380,11 @@ void MainWindow::handleOk() {
         qDebug() << qPrintable("Ending session. Index = " + QString::number(index) + " Index2 = " + QString::number(this->index));
         deinitialize();
         this->index = 0;
+        yMax = 0;
+        xMax = 0;
+        ui->widgetGraph->graph(0)->data()->clear();
+        ui->widgetGraph->graph(0)->rescaleAxes();
+        ui->widgetGraph->replot();
         std::tuple<double,double,double,double,int,int,double> dataTuple = test.device->getCurrentSession()->getSummary();
         handleSummary(dataTuple);
         test.endSession();
@@ -383,6 +404,7 @@ void MainWindow::handleOk() {
         for (Session *s : test.device->getHistory()->getSessions()){
             QString session = QString::number(s->getID());
             history.append(session);
+
         }
         updateMenu(history, "Show History");
     } else if (itemName == "Delete Session") {
@@ -425,6 +447,8 @@ void MainWindow::handleOk() {
         qDebug() << qPrintable("Displaying session " + QString::fromStdString(itemName) + ".");
         test.device->setCurrentSession(test.device->getHistory()->loadSession(stoi(itemName) - 1));
         handleSummary(test.device->getCurrentSession()->getSummary());
+        graphColor(test.device->getCurrentSession()->getHC());
+        displaySessionGraph(test.device->getCurrentSession()->getHRVData());
         handleBack();
     } else if (menuName == "Delete a Session") {
         qDebug() << qPrintable("Deleting session " + QString::fromStdString(itemName) + ".");
@@ -476,5 +500,107 @@ void MainWindow::handleSummary(std::tuple<double,double,double,double,int,int,do
     ui->labelSummaryAS->setText(QString::number(as));
 
 }
+
+void MainWindow::graphColor(int score){
+    switch(score) {
+    case 0:
+        ui->widgetGraph->graph(0)->setPen(QColor(255,0,0));
+        break;
+    case 1:
+        ui->widgetGraph->graph(0)->setPen(QColor(0,0,255));
+        break;
+    case 2:
+        ui->widgetGraph->graph(0)->setPen(QColor(0,255,0));
+        break;
+    }
+}
+
+
+
+void MainWindow::addCoordinates(double x, double y, int score){
+    graphColor(score);
+
+    if (y > yMax){
+        yMax = y;
+        ui->widgetGraph->yAxis->setRangeUpper(yMax);
+
+    }
+
+    if (x > xMax){
+        xMax = x;
+        ui->widgetGraph->xAxis->setRangeUpper(xMax);
+
+    }
+    ui->widgetGraph->graph(0)->addData(x, y);
+    ui->widgetGraph->graph(0)->rescaleAxes(true);
+    //ui->widgetGraph->graph(1)->addData(x, y); //review
+    //ui->widgetGraph->graph(1)->rescaleAxes(true); //review
+    ui->widgetGraph->replot();
+    /*ui->widgetGraph->graph(0)->addData(x, y);
+    ui->widgetGraph->graph(0)->rescaleAxes();
+    ui->widgetGraph->replot();*/
+}
+
+
+void MainWindow::displaySessionGraph(std::vector<std::pair<double, double>> graphData){
+
+    ui->widgetGraph->graph(0)->data()->clear();
+    //ui->widgetGraph->graph(1)->data()->clear(); //review
+    //ui->widgetGraph->graph(1)->setVisible(false); //review
+    ui->widgetGraph->xAxis->setRange(graphData.front().first, graphData.back().first);
+
+    for (int i = 0; i < graphData.size(); i++){
+        ui->widgetGraph->graph(0)->addData(graphData.at(i).first, graphData.at(i).second);
+        //ui->widgetGraph->graph(0)->rescaleAxes(true);
+        //ui->widgetGraph->replot();
+    }
+    ui->widgetGraph->graph(0)->rescaleAxes(true);
+    ui->widgetGraph->replot();
+}
+
+void MainWindow::initializeGraphs(){
+
+    ui->widgetGraph->setVisible(false);
+    ui->widgetGraph->addGraph();
+    //ui->widgetGraph->addGraph();//review
+    //ui->widgetGraph->addGraph();//review
+    //ui->widgetGraph->addGraph();//review
+    //ui->widgetGraph->graph(1)->setVisible(false); //review
+    //ui->widgetGraph->graph(2)->setVisible(false); //review
+    //ui->widgetGraph->graph(3)->setVisible(false); //review
+    ui->widgetGraph->xAxis->setLabel("Time (s)");
+    ui->widgetGraph->yAxis->setLabel("Heart Rate");
+
+    ui->widgetGraph->xAxis->setLabelColor(QColor (255, 255, 255));
+    ui->widgetGraph->yAxis->setLabelColor(QColor (255, 255, 255));
+
+    ui->widgetGraph->xAxis->setTickLabelColor(QColor (255, 255, 255));
+    ui->widgetGraph->yAxis->setTickLabelColor(QColor (255, 255, 255));
+
+    ui->widgetGraph->xAxis->setTickPen(QColor (255, 255, 255));
+    ui->widgetGraph->yAxis->setTickPen(QColor (255, 255, 255));
+
+    ui->widgetGraph->xAxis->setSubTickPen(QColor (255, 255, 255));
+    ui->widgetGraph->yAxis->setSubTickPen(QColor (255, 255, 255));
+
+    ui->widgetGraph->xAxis->setBasePen(QColor (255, 255, 255));
+    ui->widgetGraph->yAxis->setBasePen(QColor (255, 255, 255));
+
+    ui->widgetGraph->setBackground(QColor(0, 23, 45));
+
+    //ui->widgetGraph->graph(1)->setLineStyle(QCPGraph::lsNone); //review
+    //ui->widgetGraph->graph(1)->setScatterStyle(QCPScatterStyle::ssDisc); //review
+    /*ui->widgetGraph->graph(2)->setLineStyle(IsNone); //review
+    ui->widgetGraph->graph(2)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, QColor(0,0,255))); //review
+    ui->widgetGraph->graph(3)->setLineStyle(IsNone); //review
+    ui->widgetGraph->graph(3)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, QColor(0,255,0))); //review*/
+}
+
+
+
+
+
+
+
 
 

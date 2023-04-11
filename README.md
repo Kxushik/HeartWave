@@ -7,7 +7,7 @@ Members | Github
 Adrian A. | https://github.com/adrian-alexander
 Kaushik P.| https://github.com/Kxushik
 Kyle P.   | https://github.com/kyleszekely
-Marbo     | https://github.com/Marbo1
+Matthew A.| https://github.com/Marbo1
 
 Our team has been tasked with designing computer software for a stand alone device called 
 HeartWave. HeartWave will be able to measure, analyze and display HRV (Heart Rate 
