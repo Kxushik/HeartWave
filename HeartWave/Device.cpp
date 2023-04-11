@@ -235,9 +235,6 @@ void Device::initializeMockData(){
                 {178, 83},
                 {180, 83}
     };
-    //for (auto const& pair : data_set1) {
-    //        qDebug() << qPrintable("Time: " + QString::number(pair.first) + ", Coherence Score: " + QString::number(pair.second));
-    //    }
 }
 
 //Battery Functions

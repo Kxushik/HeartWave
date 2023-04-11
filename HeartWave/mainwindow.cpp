@@ -6,7 +6,6 @@ using namespace std;
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
 
     ui->setupUi(this);
-//    consoleMenu();
 
 
     connect(this, &MainWindow::updateUI, this, &MainWindow::onUpdateUI);
@@ -25,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->buttonPower, &QPushButton::clicked, this, &MainWindow::handleButtons);
     connect(ui->buttonBack, &QPushButton::clicked, this, &MainWindow::handleButtons);
 
-    //Initialize important shit
+    //Initialize important stuff
 
     qDebug() << qPrintable("======Initializing Button Mapping======");
 
@@ -50,8 +49,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     item->setFlags(item->flags() & ~Qt::ItemIsSelectable);
     //Disable menu on start
     menuUI->setVisible(false);
-//    ui->labelMenu->setVisible(false);
-
 }
 
 MainWindow::~MainWindow()
@@ -60,7 +57,6 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::initialize() {
-
     qDebug() << qPrintable("======Initializing session values======");
 //    int id; //ID
 //    int ts; //TimeStamp
@@ -100,12 +96,9 @@ void MainWindow::initialize() {
     progressBar->setValue(0);
     progressValue = 0;
     //Can be whatever the setting is
-//    int durationInSeconds = test.device->getCurrentSession()->breathpacer->getTI();
     int durationInSeconds = test.device->getSettings()->getTI();
     qDebug() << qPrintable("duration in seconds = " + QString::number(durationInSeconds));
-    //Duration in milliseconds divided by the number of steps (100)
     int breathTimerInterval = (durationInSeconds * 1000) / 100;
-//    int breathTimerInterval = durationInSeconds / 100;
     int uiTimerInterval = 5000;
     breathTimer = new QTimer(this);
     uiTimer = new QTimer(this);
@@ -252,7 +245,6 @@ void MainWindow::performIteration() {
     if (index < dataSetBound){
         std::tuple<int, int, int, double, int, int, double, int, int, int, int, int> dataTuple = test.device->getCurrentSession()->display_data(index);
 
-//        setHCVal(hc);
         emit updateUI(dataTuple);
         index++;
     }
@@ -399,7 +391,6 @@ void MainWindow::handleOk() {
         test.device->getHistory()->clearSessions();
         handleBack();
     } else if (itemName == "Factory Reset") {
-        qDebug() << qPrintable("Showing cock.");
         test.device->getSettings()->factoryReset();
         test.device->getHistory()->clearSessions();
         std::tuple<double,double,double,double,int,int,double> blankSummary = make_tuple(0,0,0,0,0,0,0);
@@ -418,7 +409,6 @@ void MainWindow::handleOk() {
         handleBack();
     } else if (menuName == "Breath Pacer Interval") { //done
         qDebug() << qPrintable("Setting Breath Pacer Interval to " + QString::fromStdString(itemName) + ".");
-//        test.device->getCurrentSession()->breathpacer->setTI(stoi(itemName));
         test.device->getSettings()->adjustBreathPacer(stoi(itemName), 0);
         handleBack();
     } else if (menuName == "Show History") { //done
