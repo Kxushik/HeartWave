@@ -827,11 +827,9 @@ border-radius: 20px;
        </size>
       </property>
       <property name="styleSheet">
-       <string notr="true">QPushButton {
-image: url(:/buttons/iconHeartRate.svg);
-background-color: #565556;
-border-radius: 20px;
-}</string>
+       <string notr="true">image: url(:/buttons/iconHeartRate.svg);
+background-color:rgb(255,0,0);
+border-radius: 20px;</string>
       </property>
       <property name="text">
        <string/>

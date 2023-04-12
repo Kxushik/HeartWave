@@ -13,8 +13,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //Directions
     connect(ui->buttonUp, &QPushButton::clicked, this, &MainWindow::handleButtons);
     connect(ui->buttonDown, &QPushButton::clicked, this, &MainWindow::handleButtons);
-    connect(ui->buttonLeft, &QPushButton::clicked, this, &MainWindow::handleButtons);
-    connect(ui->buttonRight, &QPushButton::clicked, this, &MainWindow::handleButtons);
+//    connect(ui->buttonLeft, &QPushButton::clicked, this, &MainWindow::handleButtons);
+//    connect(ui->buttonRight, &QPushButton::clicked, this, &MainWindow::handleButtons);
 
     //Other
     connect(ui->buttonOk, &QPushButton::clicked, this, &MainWindow::handleButtons);
@@ -177,6 +177,19 @@ void MainWindow::handleButtons() {
             //If false disable functionality from the device...
             test.device->setHeartContact();
             qDebug() << qPrintable(QString::number(test.device->getHeartContact()));
+            if (test.device->getHeartContact()) {
+                ui->buttonHeart->setStyleSheet(
+                    "image: url(:/buttons/iconHeartRate.svg);"
+                    "background-color:rgb(255,0,0);"
+                    "border-radius: 20px;"
+                );
+            } else {
+                ui->buttonHeart->setStyleSheet(
+                    "image: url(:/buttons/iconHeartRate.svg);"
+                    "background-color: #565556;"
+                    "border-radius: 20px;"
+                );
+            }
         break;
         case stringValue::menu:
             qDebug() << qPrintable("Menu function");
