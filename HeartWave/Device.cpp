@@ -5,6 +5,7 @@ Device::Device(){
     challenge = -1;
     nextID = 0;
     battery = 100.00;
+    heartContact = true;
     dev_history = new History();
     dev_settings  = new Settings();
     initSession(1);
@@ -235,15 +236,16 @@ void Device::initializeMockData(){
                 {178, 83},
                 {180, 83}
     };
-    //for (auto const& pair : data_set1) {
-    //        qDebug() << qPrintable("Time: " + QString::number(pair.first) + ", Coherence Score: " + QString::number(pair.second));
-    //    }
 }
 
 //Battery Functions
 void Device::depleteBattery() {if (battery > 0) {battery -= 1; }}
 void Device::chargeBattery() { battery = 100.00; }
 double Device::getBattery() { return battery; }
+
+//HeartContact Functions
+void Device::setHeartContact() { if (heartContact == true) { heartContact = false; } else { heartContact = true; } }
+bool Device::getHeartContact() { return heartContact; }
 
 void Device::setCurrentSession(Session *session) {
     currentSession = session;

@@ -21,7 +21,6 @@ class Settings
         Settings();
         void adjustBreathPacer(int, int);
         void adjustChallenge(int);
-        void charge();
         void factoryReset();
         std::tuple <int,int,int> getSettings();
 

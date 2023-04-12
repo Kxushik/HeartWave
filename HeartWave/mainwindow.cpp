@@ -6,7 +6,6 @@ using namespace std;
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
 
     ui->setupUi(this);
-//    consoleMenu();
 
 
     connect(this, &MainWindow::updateUI, this, &MainWindow::onUpdateUI);
@@ -25,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->buttonPower, &QPushButton::clicked, this, &MainWindow::handleButtons);
     connect(ui->buttonBack, &QPushButton::clicked, this, &MainWindow::handleButtons);
 
-    //Initialize important shit
+    //Initialize important stuff
 
     qDebug() << qPrintable("======Initializing Button Mapping======");
 
@@ -50,8 +49,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     item->setFlags(item->flags() & ~Qt::ItemIsSelectable);
     //Disable menu on start
     menuUI->setVisible(false);
-//    ui->labelMenu->setVisible(false);
     initializeGraphs();
+
 
 
 }
@@ -62,7 +61,6 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::initialize() {
-
     qDebug() << qPrintable("======Initializing session values======");
 //    int id; //ID
 //    int ts; //TimeStamp
@@ -105,13 +103,11 @@ void MainWindow::initialize() {
     xMax =0;
     //ui->widgetGraph->graph(0)->data()->clear();
     //Can be whatever the setting is
-//    int durationInSeconds = test.device->getCurrentSession()->breathpacer->getTI();
     int durationInSeconds = test.device->getSettings()->getTI();
     qDebug() << qPrintable("duration in seconds = " + QString::number(durationInSeconds));
-    //Duration in milliseconds divided by the number of steps (100)
     int breathTimerInterval = (durationInSeconds * 1000) / 100;
-//    int breathTimerInterval = durationInSeconds / 100;
-    int uiTimerInterval = 500; //change this later
+
+    int uiTimerInterval = 5000;
     breathTimer = new QTimer(this);
     uiTimer = new QTimer(this);
     connect(breathTimer, &QTimer::timeout, this, &MainWindow::updateBreathPacer);
@@ -177,6 +173,10 @@ void MainWindow::handleButtons() {
         break;
         case stringValue::heart:
             qDebug() << qPrintable("Heart function");
+            //Should set heartcontact to true or false
+            //If false disable functionality from the device...
+            test.device->setHeartContact();
+            qDebug() << qPrintable(QString::number(test.device->getHeartContact()));
         break;
         case stringValue::menu:
             qDebug() << qPrintable("Menu function");
@@ -257,21 +257,33 @@ void MainWindow::onUpdateUI(std::tuple<int, int, int, double, int, int, double, 
 void MainWindow::performIteration() {
     int dataSetBound = test.device->getCurrentSession()->getDataSetLength();
     qDebug() << qPrintable("index = " + QString::number(index) + " bound = " + QString::number(dataSetBound));
-    test.device->depleteBattery();
     setBattery_UI(test.device->getBattery());
+    if (test.device->getBattery() == 0.00) {
+            //Dead battery stuff goes here...
+            qDebug() << qPrintable("Battery is dead, device cannot function, please recharge...");
+        }
+    if (test.device->getHeartContact() == false) {
+        //No heart contact stuff goes here...
+        qDebug() << qPrintable("Heart contact missing, please reconnect");
+        }
+    //If battery and heart sensor are not set to 0 update the function...
+    if ((test.device->getBattery() != 0) && (test.device->getHeartContact() == true)) {
+        test.device->depleteBattery();
+        if (index < dataSetBound){
+            std::tuple<int, int, int, double, int, int, double, int, int, int, int, int> dataTuple = test.device->getCurrentSession()->display_data(index);
 
-    if (index < dataSetBound){
-        std::tuple<int, int, int, double, int, int, double, int, int, int, int, int> dataTuple = test.device->getCurrentSession()->display_data(index);
+            emit updateUI(dataTuple);
+            index++;
+        }
+        else{
+            qDebug() << qPrintable("Reached end of dataset, performing no more iterations");
 
-//        setHCVal(hc);
-        emit updateUI(dataTuple);
-        index++;
+        }
     }
-    else{
-        qDebug() << qPrintable("Reached end of dataset, performing no more iterations");
 
-    }
 }
+
+
 
 void MainWindow::setLow_UI(bool newVal) {
     if (newVal) {
@@ -421,7 +433,6 @@ void MainWindow::handleOk() {
         test.device->getHistory()->clearSessions();
         handleBack();
     } else if (itemName == "Factory Reset") {
-        qDebug() << qPrintable("Showing cock.");
         test.device->getSettings()->factoryReset();
         test.device->getHistory()->clearSessions();
         std::tuple<double,double,double,double,int,int,double> blankSummary = make_tuple(0,0,0,0,0,0,0);
@@ -440,7 +451,6 @@ void MainWindow::handleOk() {
         handleBack();
     } else if (menuName == "Breath Pacer Interval") { //done
         qDebug() << qPrintable("Setting Breath Pacer Interval to " + QString::fromStdString(itemName) + ".");
-//        test.device->getCurrentSession()->breathpacer->setTI(stoi(itemName));
         test.device->getSettings()->adjustBreathPacer(stoi(itemName), 0);
         handleBack();
     } else if (menuName == "Show History") { //done

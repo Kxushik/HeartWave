@@ -7,10 +7,6 @@ Menu::Menu(){
     menuList = QStringList{ "New Session", "End Session", "Challenge Level", "Breath Pacer Interval", "Show History", "Delete Session", "Delete All Sessions", "Factory Reset" };
 }
 
-void Menu::display(){
-    //
-}
-
 void Menu::newSession(int dataset){
     //Check which dataset to be loaded. And pass it through to device
     device->initSession(dataset);
