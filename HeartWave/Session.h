@@ -3,7 +3,6 @@
 #include <vector>
 #include <tuple>
 #include <BreathPacer.h>
-#include <Graph.h>
 /*
 Class: Session
 Purpose: Has all the necessary key values for a session (including id for session), and the algorithms in order to compute these key values
@@ -49,7 +48,6 @@ class Session
         int getLength();
         int getCSDataSize();
         void setChallengeLevel(int);
-        Graph* graph;
         BreathPacer* breathpacer;
         std::tuple<int,int,int, double,int,int,double,int,int,int,int,int> display_data(int);
         int getDataSetLength();

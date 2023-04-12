@@ -20,7 +20,6 @@ resources_dir = res
 SOURCES += \
     BreathPacer.cpp \
     Device.cpp \
-    Graph.cpp \
     History.cpp \
     Menu.cpp \
     Screen.cpp \
@@ -34,7 +33,6 @@ HEADERS += \
     mainwindow.h \
     BreathPacer.h \
     Device.h \
-    Graph.h \
     History.h \
     Menu.h \
     Screen.h \

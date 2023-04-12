@@ -14,7 +14,6 @@ Session::Session(int init_id, std::vector<std::pair<double, double>> cs_data_set
     low_count =0;
     med_count = 0;
     high_count = 0;
-    graph = new Graph();
     breathpacer = new BreathPacer();
     cs_data = cs_data_set;
     hrv_data = hrv_data_set;
