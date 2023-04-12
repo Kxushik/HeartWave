@@ -3,7 +3,7 @@
 
 
 Settings::Settings(){
-    timeInterval = 5;
+    timeInterval = 10;
     breaths = 0;
     challengeLevel = 1;
 }
