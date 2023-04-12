@@ -248,9 +248,9 @@ void MainWindow::onUpdateUI(std::tuple<int, int, int, double, int, int, double, 
     ui->textLength->setText(QString::number(l));
 
     //Graph
-    if (!ui->widgetGraph->isVisible()){
+    /*if (!ui->widgetGraph->isVisible()){
         ui->widgetGraph->setVisible(true);
-    }
+    }*/
     addCoordinates(ts, hr, hc);
 }
 
@@ -382,6 +382,9 @@ void MainWindow::handleOk() {
         ui->widgetGraph->graph(0)->data()->clear();
         ui->widgetGraph->graph(0)->rescaleAxes(true);
         ui->widgetGraph->replot();
+        if (!ui->widgetGraph->isVisible()){
+            ui->widgetGraph->setVisible(true);
+        }
         std::tuple<double,double,double,double,int,int,double> dataTuple = make_tuple(0,0,0,0,0,0,0);
         handleSummary(dataTuple);
         initialize();
