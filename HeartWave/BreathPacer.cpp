@@ -1,7 +1,7 @@
 #include <BreathPacer.h>
 
 BreathPacer::BreathPacer(){
-    timeInterval = 2;
+    timeInterval = 10;
     breaths = 0;
 }
 
