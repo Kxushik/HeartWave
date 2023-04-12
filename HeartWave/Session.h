@@ -8,28 +8,41 @@ Class: Session
 Purpose: Has all the necessary key values for a session (including id for session), and the algorithms in order to compute these key values
 
 Variables:
-int id                      -> The id of the session
-int coherenceScore          -> The coherence of the session
-int heartCoherence          -> The heart coherence of the session
-int challengeLevel          -> The challenge level of the session
-int achievementScore        -> The acheivement score of the session
-int HRV                     -> The HRV of the session
-int length                  -> The length of the session
+    int id;                                                                                 -> ID of Session
+    double coherenceScore;                                                                  -> Current CS
+    int heartrate;                                                                          -> Current HR
+    int heartCoherence;                                                                     -> Current HC
+    int challengeLevel;                                                                     -> Current CL
+    int achievementScore;                                                                   -> Current AS
+    int HRV;                                                                                -> Current HRV Value (low, med high)
+    int length;                                                                             -> Current Session Length
+    int low_count;                                                                          -> Low Score Count
+    int med_count;                                                                          -> Med Score Count
+    int high_count;                                                                         -> High Score Count
+    std::vector<std::pair<double, double>> cs_data;                                         -> CS Mock Data
+    std::vector<std::pair<double, double>> hrv_data;                                        -> HR Mock Data
+    BreathPacer* breathpacer;                                                               -> BreathPacer Object
 
 Functions:
-Session()                   -> Constructor for the Session class
-void calculateCS()          -> Calculates the coherence score
-void calculateHC()          -> Calculates the heart coherence
-void calculateCL()          -> Calculates the challenge level
-void calculateAS()          -> Calculates the achievement score
-void calculateHRV()         -> Calculates the HRV
-int getID()                 -> Returns the id of the session
-int getCS()                 -> Returns the coherence score
-int getHC()                 -> Returns the heart coherence  
-int getCL()                 -> Returns the challenge level
-int getHRV()                -> Returns the HRV
-int getLength()             -> Returns the length of the session
-void setChallengeLevel(int) -> Sets the challenge level
+    Session()                                                                               -> Constructor for the Session class
+    void calculateCS()                                                                      -> Calculates the coherence score
+    void calculateHC()                                                                      -> Calculates the heart coherence
+    void calculateCL()                                                                      -> Calculates the challenge level
+    void calculateAS()                                                                      -> Calculates the achievement score
+    void calculateHRV()                                                                     -> Calculates the HRV
+    int getID()                                                                             -> Returns the id of the session
+    int getCS()                                                                             -> Returns the coherence score
+    int getHC()                                                                             -> Returns the heart coherence
+    int getCL()                                                                             -> Returns the challenge level
+    int getHRV()                                                                            -> Returns the HRV
+    int getLength()                                                                         -> Returns the length of the session
+    void setChallengeLevel(int)                                                             -> Sets the challenge level
+    std::tuple<int,int,int, double,int,int,double,int,int,int,int,int> display_data(int);   -> Returns Data for UI Display
+    int getDataSetLength();                                                                 -> Returns Data Set Length
+    void summary();                                                                         -> Prints Summary to Console
+    std::tuple<double,double,double,double,int,int,double> getSummary();                    -> Returns Summary as Tuple
+    std::vector<std::pair<double, double>> getCSData();                                     -> Returns Coherence Score Data
+    std::vector<std::pair<double, double>> getHRVData();                                    -> Returns HRV Data
 */
 class Session
 {

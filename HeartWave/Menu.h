@@ -9,15 +9,17 @@ Class: Menu
 Purpose: Provides functions for the device
 
 Variables:
+    Device *device;         -> Device Object
+    Screen *screen;         -> Screen Object
+    QStringList menuList;   -> QStringList of Menu Options
 
 Functions:
-Menu()                      -> Constructor for the Menu class
-void display()              -> Displays the menu   
-void newSession()           -> Starts a new session
-void endSession()           -> Ends the current session
-void showHistory()          -> Displays the history
-void deleteHistory(int)     -> Deletes a specific history
-void deleteAllHistory()     -> Deletes all history
+    Menu()                      -> Constructor for the Menu class
+    void newSession()           -> Starts a new session
+    void endSession()           -> Ends the current session
+    void showHistory()          -> Displays the history
+    void deleteHistory(int)     -> Deletes a specific history
+    void deleteAllHistory()     -> Deletes all history
 */
 
 class Menu
