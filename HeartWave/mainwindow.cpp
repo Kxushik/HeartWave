@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QDateTime>
 using namespace std;
 
 //Global variables - Test
@@ -103,10 +104,11 @@ void MainWindow::initialize() {
     xMax =0;
     //ui->widgetGraph->graph(0)->data()->clear();
     //Can be whatever the setting is
-    int durationInSeconds = test.device->getSettings()->getTI();
+//    int durationInSeconds = test.device->getSettings()->getTI();
+    int durationInSeconds = 1;
     int breathTimerInterval = (durationInSeconds * 1000) / 100;
 
-    int uiTimerInterval = 5000;
+    int uiTimerInterval = 1000;
     breathTimer = new QTimer(this);
     uiTimer = new QTimer(this);
     connect(breathTimer, &QTimer::timeout, this, &MainWindow::updateBreathPacer);
@@ -371,6 +373,8 @@ void MainWindow::handleOk() {
     QListWidgetItem *newSession = menuUI->item(0);
     QListWidgetItem *endSession = menuUI->item(1);
     QListWidgetItem *currItem = menuUI->currentItem();
+    QString timeFormat = "yyyy-MM-dd HH:mm:ss";
+    QString time;
     if (itemName == "New Session" && (newSession->flags() & Qt::ItemIsSelectable)) {
         qDebug() << qPrintable("Starting session with dataset " + QString::number(dataset) + ".");
         this->index = 0;
@@ -386,6 +390,9 @@ void MainWindow::handleOk() {
         handleSummary(dataTuple);
         initialize();
         test.newSession(dataset);
+        QDateTime currTime = QDateTime::currentDateTime();
+        time = currTime.toString(timeFormat);
+        test.device->getCurrentSession()->setDate(time);
         currItem->setFlags(currItem->flags() & ~Qt::ItemIsSelectable);
         endSession->setFlags(endSession->flags() | Qt::ItemIsSelectable);
     } else if (itemName == "End Session" && (endSession->flags() & Qt::ItemIsSelectable)) {
@@ -400,6 +407,7 @@ void MainWindow::handleOk() {
         std::tuple<double,double,double,double,int,int,double> dataTuple = test.device->getCurrentSession()->getSummary();
         handleSummary(dataTuple);
         test.endSession();
+
         currItem->setFlags(currItem->flags() & ~Qt::ItemIsSelectable);
         newSession->setFlags(newSession->flags() | Qt::ItemIsSelectable);
     } else if (itemName == "Challenge Level") { //Done
@@ -414,16 +422,16 @@ void MainWindow::handleOk() {
         qDebug() << qPrintable("Showing history.");
         QStringList history = {};
         for (Session *s : test.device->getHistory()->getSessions()){
-            QString session = QString::number(s->getID());
+            qDebug() << qPrintable("The current time is " + s->getDate());
+            QString session = "Session #" + QString::number(s->getID()) + " " + s->getDate();
             history.append(session);
-
         }
         updateMenu(history, "Show History");
-    } else if (itemName == "Delete Session") {
+    } else if (itemName == "Delete Session") { //Done
         qDebug() << qPrintable("Showing sessions to be deleted.");
         QStringList history = {};
         for (Session *s : test.device->getHistory()->getSessions()){
-            QString session = QString::number(s->getID());
+            QString session = "Session #" + QString::number(s->getID()) + " " + s->getDate();
             history.append(session);
         }
         updateMenu(history, "Delete a Session");
@@ -454,15 +462,21 @@ void MainWindow::handleOk() {
         test.device->getSettings()->adjustBreathPacer(stoi(itemName), 0);
         handleBack();
     } else if (menuName == "Show History") { //done
-        qDebug() << qPrintable("Displaying session " + QString::fromStdString(itemName) + ".");
-        test.device->setCurrentSession(test.device->getHistory()->loadSession(stoi(itemName) - 1));
+        char s = itemName[9];
+        QChar qs(s);
+        QString session = QString(qs);
+        qDebug() << qPrintable("Displaying session " + session + ".");
+        test.device->setCurrentSession(test.device->getHistory()->loadSession(session.toInt() - 1));
         handleSummary(test.device->getCurrentSession()->getSummary());
         graphColor(test.device->getCurrentSession()->getHC());
         displaySessionGraph(test.device->getCurrentSession()->getHRVData());
         handleBack();
     } else if (menuName == "Delete a Session") {
-        qDebug() << qPrintable("Deleting session " + QString::fromStdString(itemName) + ".");
-        test.device->getHistory()->removeSession(stoi(itemName));
+        char s = itemName[9];
+        QChar qs(s);
+        QString session = QString(qs);
+        qDebug() << qPrintable("Deleting session " + session + ".");
+        test.device->getHistory()->removeSession(session.toInt());
         handleBack();
     }
 
@@ -605,12 +619,3 @@ void MainWindow::initializeGraphs(){
     ui->widgetGraph->graph(3)->setLineStyle(IsNone); //review
     ui->widgetGraph->graph(3)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, QColor(0,255,0))); //review*/
 }
-
-
-
-
-
-
-
-
-

@@ -187,3 +187,10 @@ std::vector<std::pair<double, double>> Session::getHRVData() {
     return hrv_data;
 }
 
+void Session::setDate(QString newVal) {
+    date = newVal;
+}
+
+QString Session::getDate() {
+    return date;
+}

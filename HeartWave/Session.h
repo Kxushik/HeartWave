@@ -3,6 +3,7 @@
 #include <vector>
 #include <tuple>
 #include <BreathPacer.h>
+#include <QString>
 /*
 Class: Session
 Purpose: Has all the necessary key values for a session (including id for session), and the algorithms in order to compute these key values
@@ -68,6 +69,8 @@ class Session
         std::tuple<double,double,double,double,int,int,double> getSummary();
         std::vector<std::pair<double, double>> getCSData();
         std::vector<std::pair<double, double>> getHRVData();
+        QString getDate();
+        void setDate(QString newVal);
     private:
         int id;
         double coherenceScore;
@@ -82,6 +85,7 @@ class Session
         int high_count;
         std::vector<std::pair<double, double>> cs_data;
         std::vector<std::pair<double, double>> hrv_data;
+        QString date;
 
 };
 #endif

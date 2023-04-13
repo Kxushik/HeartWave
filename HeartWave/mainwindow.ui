@@ -573,7 +573,7 @@ color:rgb(255,255,255);</string>
       <property name="styleSheet">
        <string notr="true">QPushButton {
 image: url(:/buttons/buttonDown.svg);
-background-color: #ffffff;
+background-color:rgb(50,50,50);
 border-radius: 20px;
 }</string>
       </property>
@@ -605,7 +605,7 @@ border-radius: 20px;
       <property name="styleSheet">
        <string notr="true">QPushButton {
 image: url(:/buttons/buttonLeft.svg);
-background-color: #ffffff;
+background-color:rgb(50,50,50);
 border-radius: 20px;
 }</string>
       </property>
@@ -637,7 +637,7 @@ border-radius: 20px;
       <property name="styleSheet">
        <string notr="true">QPushButton {
 image: url(:/buttons/buttonOk.svg);
-background-color: #ffffff;
+background-color:rgb(50,50,50);
 border-radius: 20px;
 }</string>
       </property>
@@ -669,7 +669,7 @@ border-radius: 20px;
       <property name="styleSheet">
        <string notr="true">QPushButton {
 image: url(:/buttons/buttonPower.svg);
-background-color: #ffffff;
+background-color:rgb(50,50,50);
 border-radius: 20px;
 }</string>
       </property>
@@ -701,7 +701,7 @@ border-radius: 20px;
       <property name="styleSheet">
        <string notr="true">QPushButton {
 image: url(:/buttons/buttonCharge.svg);
-background-color: #ffffff;
+background-color:rgb(50,50,50);
 border-radius: 20px;
 }</string>
       </property>
@@ -733,7 +733,7 @@ border-radius: 20px;
       <property name="styleSheet">
        <string notr="true">QPushButton {
 image: url(:/buttons/buttonRight.svg);
-background-color: #ffffff;
+background-color:rgb(50,50,50);
 border-radius: 20px;
 }</string>
       </property>
@@ -765,7 +765,7 @@ border-radius: 20px;
       <property name="styleSheet">
        <string notr="true">QPushButton {
 image: url(:/buttons/buttonMenu.svg);
-background-color: #ffffff;
+background-color:rgb(50,50,50);
 border-radius: 20px;
 }</string>
       </property>
@@ -797,7 +797,7 @@ border-radius: 20px;
       <property name="styleSheet">
        <string notr="true">QPushButton {
 image: url(:/buttons/buttonUp.svg);
-background-color: #ffffff;
+background-color:rgb(50,50,50);
 border-radius: 20px;
 }</string>
       </property>
@@ -859,7 +859,7 @@ border-radius: 20px;</string>
       <property name="styleSheet">
        <string notr="true">QPushButton {
 image: url(:/buttons/buttonBack.svg);
-background-color: #ffffff;
+background-color:rgb(50,50,50);
 border-radius: 20px;
 }</string>
       </property>
