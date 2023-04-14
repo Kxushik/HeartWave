@@ -24,4 +24,4 @@ Kaushik P.| Placeholder
 Kyle P.   | Placeholder
 Matthew A.| Placeholder
 
-![image](https://user-images.githubusercontent.com/54908454/232102617-82b6a3fb-38f9-4bdf-8f57-5256aaff5fea.png)
+![New Session](https://user-images.githubusercontent.com/54908454/232104408-2eb99d13-9d02-4317-a539-549da313f552.gif)
