@@ -14,7 +14,7 @@ Variables:
     int heartrate;                                                                          -> Current HR
     int heartCoherence;                                                                     -> Current HC
     int challengeLevel;                                                                     -> Current CL
-    int achievementScore;                                                                   -> Current AS
+    double achievementScore;                                                                   -> Current AS
     int HRV;                                                                                -> Current HRV Value (low, med high)
     int length;                                                                             -> Current Session Length
     int low_count;                                                                          -> Low Score Count
@@ -77,7 +77,7 @@ class Session
         int heartrate;
         int heartCoherence;
         int challengeLevel;
-        int achievementScore;
+        double achievementScore;
         int HRV;
         int length;
         int low_count;
