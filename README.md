@@ -17,5 +17,11 @@ stress and achieve a high state of coherence, an optimal psychophysiological sta
 well being and health. HeartWave is based on technology produced by the HeartMath institute, 
 including their Inner Balance and emWave2 line of products.
 
-![image](https://user-images.githubusercontent.com/54908454/227802585-b137595f-9dfa-4377-9b3d-4c4484194382.png)
+Members | Tasks
+------------ | -------------
+Adrian A. | Placeholder
+Kaushik P.| Placeholder
+Kyle P.   | Placeholder
+Matthew A.| Placeholder
+
 ![image](https://user-images.githubusercontent.com/54908454/232102617-82b6a3fb-38f9-4bdf-8f57-5256aaff5fea.png)
