@@ -140,9 +140,8 @@ std::tuple<int,int,int, double,int,int,double,int,int,int,int,int> Session::disp
     coherenceScore = std::get<1>(cs_data[index]);
     calculateHC(coherenceScore);
     calculateAS();
-    length+=5;
+    length+=1;
     heartrate = std::get<1>(hrv_data[index]);
-
     data_tuple = std::make_tuple(id,length,heartrate,coherenceScore,heartCoherence,challengeLevel,achievementScore,length,breathpacer->getTI(),low_count,med_count,high_count);
     return data_tuple;
 }
