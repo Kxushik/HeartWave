@@ -15,7 +15,7 @@ Variables:
     int challenge;                                          -> Current Challenge Level
     int nextID;                                             -> Session ID count
     double battery;                                         -> Battery Value
-    bool heartContact;                                      -> Heart Reader connection (True = Connected, False = Disconnected)
+    bool heartContact;                                      -> Heart Sensor connection (True = Connected, False = Disconnected)
     std::vector<std::pair<double, double>> cs_data_set1;    -> Coherence Score Mock Data
     std::vector<std::pair<double, double>> cs_data_set2;    -> Coherence Score Mock Data
     std::vector<std::pair<double, double>> cs_data_set3;    -> Coherence Score Mock Data
@@ -58,10 +58,13 @@ class Device
         void chargeBattery();
         bool getHeartContact();
         void setHeartContact();
+        void setPower();
+        bool getPower();
 
     private:
         int coherence;
         int challenge;
+        bool power;
         int nextID;
         double battery;
         bool heartContact;

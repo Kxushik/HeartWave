@@ -10,7 +10,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 
     connect(this, &MainWindow::updateUI, this, &MainWindow::onUpdateUI);
-
     //Directions
     connect(ui->buttonUp, &QPushButton::clicked, this, &MainWindow::handleButtons);
     connect(ui->buttonDown, &QPushButton::clicked, this, &MainWindow::handleButtons);
@@ -188,6 +187,21 @@ void MainWindow::handleButtons() {
             handleMenu();
         break;
         case stringValue::power:
+            qDebug() << "Power Pressed";
+            test.device->setPower() ;
+            qDebug() << test.device->getPower();
+            if (test.device->getPower() == false) {
+                //turn screen black (need to account for if theres a session running or not)
+                //deinitialize();
+                qDebug() << "Turn Off";
+
+            }
+            else if (test.device->getPower() == true) {
+                //display turns on (should be the same as when we start up the app)
+                //initialize();
+                qDebug() << "Turn On";
+
+            }
         break;
         case stringValue::back:
             handleBack();

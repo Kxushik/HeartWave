@@ -4,6 +4,7 @@ Device::Device(){
     coherence = -1;
     challenge = -1;
     nextID = 0;
+    power = true;
     battery = 100.00;
     heartContact = true;
     dev_history = new History();
@@ -252,6 +253,9 @@ void Device::setCurrentSession(Session *session) {
 }
 
 
+//Power Functions
+void Device::setPower() { if (power == true) { power = false; } else { power = true; } }
+bool Device::getPower() { return power; }
 
 
 
