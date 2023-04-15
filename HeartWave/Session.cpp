@@ -171,7 +171,6 @@ std::tuple<double,double,double,double,int,int,double> Session::getSummary() {
     mpercent = double(med_count) / double(low_count+med_count+high_count) * 100;
     hpercent = double(high_count) / double(low_count+med_count+high_count) * 100;
     double avgCoherence = achievementScore / double(cs_data.size());
-
     //Low coherence, med coherence, high coherence, avg coherence, challengeLevel, length, achievement score
     std::tuple<double,double,double,double,int,int,double> data_tuple;
     data_tuple = std::make_tuple(lpercent,mpercent,hpercent,avgCoherence,challengeLevel,length,achievementScore);

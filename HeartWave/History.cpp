@@ -16,7 +16,13 @@ void History::addSession(Session *newSession){ sessions.push_back(newSession); }
 
 void History::clearSessions(){sessions.clear();}
 
-Session* History::loadSession(int id){ return sessions[id]; }
+Session* History::loadSession(int id){
+    for (int i = 0; i< sessions.size(); i++){
+        if (sessions[i]->getID() == id){
+            return sessions[i];
+        }
+    }
+}
 
 std::vector<Session*> History::getSessions(){ return sessions; }
 

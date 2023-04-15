@@ -436,7 +436,6 @@ void MainWindow::handleOk() {
         qDebug() << qPrintable("Showing history.");
         QStringList history = {};
         for (Session *s : test.device->getHistory()->getSessions()){
-            qDebug() << qPrintable("The current time is " + s->getDate());
             QString session = "Session #" + QString::number(s->getID()) + " " + s->getDate();
             history.append(session);
         }
@@ -479,8 +478,8 @@ void MainWindow::handleOk() {
         char s = itemName[9];
         QChar qs(s);
         QString session = QString(qs);
-        qDebug() << qPrintable("Displaying session " + session + ".");
-        test.device->setCurrentSession(test.device->getHistory()->loadSession(session.toInt() - 1));
+        test.device->setCurrentSession(test.device->getHistory()->loadSession(session.toInt()));
+        test.device->getHistory()->showHistory();
         handleSummary(test.device->getCurrentSession()->getSummary());
         graphColor(test.device->getCurrentSession()->getHC());
         displaySessionGraph(test.device->getCurrentSession()->getHRVData());
