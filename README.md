@@ -19,9 +19,13 @@ including their Inner Balance and emWave2 line of products.
 
 Members | Tasks
 ------------ | -------------
-Adrian A. | Placeholder
-Kaushik P.| Placeholder
-Kyle P.   | Placeholder
-Matthew A.| Placeholder
+Adrian A. | Front-end, Use Cases and Video
+Kaushik P.| Back-end, UML Class Diagram and Textual Explanation
+Kyle P.   | Back-end, UML Class Diagram and Sequence Diagrams
+Matthew A.| Front-end, Use Cases and Traceability Matrix
+
+# Organization of Submission
+- All of the delivarables (textual explanation, diagrams, and traceability matrix) are in the documenation folder.
+- Implementation of the HeartWave application is in the HeartWave folder.
 
 ![New Session](https://user-images.githubusercontent.com/54908454/232104408-2eb99d13-9d02-4317-a539-549da313f552.gif)
