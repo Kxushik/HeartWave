@@ -274,16 +274,20 @@ void MainWindow::onUpdateUI(std::tuple<int, int, int, double, int, int, double, 
 void MainWindow::performIteration() {
     int dataSetBound = test.device->getCurrentSession()->getDataSetLength();
     setBattery_UI(test.device->getBattery());
+    if (test.device->getPower() == false) {
+            //Power Off
+            qDebug() << qPrintable("Device is turned off, to resume session please turn on...");
+        }
     if (test.device->getBattery() == 0.00) {
             //Dead battery stuff goes here...
             qDebug() << qPrintable("Battery is dead, device cannot function, please recharge...");
         }
     if (test.device->getHeartContact() == false) {
         //No heart contact stuff goes here...
-        qDebug() << qPrintable("Heart contact missing, please reconnect");
+        qDebug() << qPrintable("Heart sensor missing, please reconnect");
         }
     //If battery and heart sensor are not set to 0 update the function...
-    if ((test.device->getBattery() != 0) && (test.device->getHeartContact() == true)) {
+    if ((test.device->getBattery() != 0) && (test.device->getHeartContact() == true && (test.device->getPower() == true))) {
         test.device->depleteBattery();
         if (index < dataSetBound){
             std::tuple<int, int, int, double, int, int, double, int, int, int, int, int> dataTuple = test.device->getCurrentSession()->display_data(index);
