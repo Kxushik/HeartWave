@@ -3,7 +3,6 @@
 #include <QDateTime>
 using namespace std;
 
-//Global variables - Test
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
 
     ui->setupUi(this);
@@ -65,37 +64,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::initialize() {
     qDebug() << qPrintable("======Initializing session values======");
-//    int id; //ID
-//    int ts; //TimeStamp
-//    int hr; //Heart Rate
-//    double cs; //Cohe Score
-//    int hc; //Heart coher
-//    int cl; //Challenge level
-//    double as; //Acheivement score
-//    int l; //length
-//    int bti; //bti
 
-
-    //Ask how to fill in the constructor cuz this creates two new objects
-//    Menu test;
-//    int timer = 0;
-
-//    int batteryLevel = test.screen->getBattery();
-//    bool batteryCharge = test.screen->getCharge();
-//    bool contact = test.screen->getContact();
-//    int length = test.device->getCurrentSession()->getLength();
-
-//    int sessionId = test.device->getCurrentSession()->getID();
-//    int HC = test.device->getCurrentSession()->getHC();
-//    int CS = test.device->getCurrentSession()->getCS();
-//    int CL = test.device->getCurrentSession()->getCL();
-//    int HRV = test.device->getCurrentSession()->getHRV();
-
-//    ui->progressBatteryLevel->setValue(batteryLevel);
-//    ui->textCoherence->setText(QString::number(HC));
-//    ui->textLength->setText(QString::number(timer));
-//    ui->textAchievement->setText(QString::number(HRV));
-    //Set
     //Breath pacer initialization
     progressBar = ui->breathIndicator;
     progressBar->setMinimum(0);
@@ -104,10 +73,8 @@ void MainWindow::initialize() {
     progressValue = 0;
     yMax = 0;
     xMax =0;
-    //ui->widgetGraph->graph(0)->data()->clear();
     //Can be whatever the setting is
-//    int durationInSeconds = test.device->getSettings()->getTI();
-    int durationInSeconds = 1;
+    int durationInSeconds = test.device->getSettings()->getTI();
     int breathTimerInterval = (durationInSeconds * 1000) / 100;
 
     int uiTimerInterval = 1000;
@@ -124,26 +91,6 @@ void MainWindow::deinitialize() {
     uiTimer->stop();
 }
 
-//Function to test the menu through the console until front-enders connect the UI to our functions...
-void MainWindow::consoleMenu() {
-    //Initializing a test menu (print statements to console to check values while adding the functions)
-
-//    qDebug() << qPrintable("======Printing Screen======");
-//    qDebug() << qPrintable("Battery Level: " + QString::number(test.screen->getBattery()));
-//    qDebug() << qPrintable("Charge: " + QString::number(test.screen->getCharge()));
-//    qDebug() << qPrintable("Contact: " + QString::number(test.screen->getContact()));
-//    qDebug() << qPrintable("Length: " + QString::number(test.device->getCurrentSession()->getLength()));
-//    qDebug() << qPrintable("======Printing Device======");
-//    qDebug() << qPrintable("Session ID: " + QString::number(test.device->getCurrentSession()->getID()));
-//    qDebug() << qPrintable("======Printing Session Variables======");
-//    qDebug() << qPrintable("Achievement Score: ");
-//    qDebug() << qPrintable("Heart Coherence: " + QString::number(test.device->getCurrentSession()->getHC()));
-//    qDebug() << qPrintable("Coherence Score: " + QString::number(test.device->getCurrentSession()->getCS()));
-//    qDebug() << qPrintable("Challenge Level: " + QString::number(test.device->getCurrentSession()->getCL()));
-//    qDebug() << qPrintable("Heart Rate Variability: " + QString::number(test.device->getCurrentSession()->getHRV()));
-
-//    //Settings test, keep so we can see how we can unpack tuples, get<i>test.device->getSettings() also works
-}
 void MainWindow::handleButtons() {
     //Get button
     QPushButton* buttonSender = qobject_cast<QPushButton*>(sender());
@@ -169,8 +116,6 @@ void MainWindow::handleButtons() {
             setBattery_UI(test.device->getBattery());
         break;
         case stringValue::heart:
-            //Should set heartcontact to true or false
-            //If false disable functionality from the device...
             test.device->setHeartContact();
             if (test.device->getHeartContact()) {
                 ui->buttonHeart->setStyleSheet(
@@ -201,7 +146,6 @@ void MainWindow::handleButtons() {
 
             }
             else if (test.device->getPower() == true) {
-                //display turns on (should be the same as when we start up the app)
                 ui->screenBlack1->setVisible(false);
                 ui->screenBlack2->setVisible(false);
                 ui->screenBlack3->setVisible(false);
@@ -226,7 +170,6 @@ void MainWindow::setLength_UI(int newVal) {
 
 void MainWindow::onUpdateUI(std::tuple<int, int, int, double, int, int, double, int, int, int, int, int> dataTuple) {
     // This function will take in a data tuple that contains all the data to be updated on the UI
-    //coherence score, heart rate, achievement, etc
     int id; //ID
     int ts; //TimeStamp
     int hr; //Heart Rate
@@ -269,11 +212,6 @@ void MainWindow::onUpdateUI(std::tuple<int, int, int, double, int, int, double, 
     ui->textAchievement->setText(QString::number(as));
     //Length
     ui->textLength->setText(QString::number(l));
-
-    //Graph
-    /*if (!ui->widgetGraph->isVisible()){
-        ui->widgetGraph->setVisible(true);
-    }*/
     addCoordinates(ts, hr, hc);
 }
 
@@ -281,18 +219,14 @@ void MainWindow::performIteration() {
     int dataSetBound = test.device->getCurrentSession()->getDataSetLength();
     setBattery_UI(test.device->getBattery());
     if (test.device->getPower() == false) {
-            //Power Off
             qDebug() << qPrintable("Device is turned off, to resume session please turn on...");
         }
     if (test.device->getBattery() == 0.00) {
-            //Dead battery stuff goes here...
             qDebug() << qPrintable("Battery is dead, device cannot function, please recharge...");
         }
     if (test.device->getHeartContact() == false) {
-        //No heart contact stuff goes here...
         qDebug() << qPrintable("Heart sensor missing, please reconnect");
         }
-    //If battery and heart sensor are not set to 0 update the function...
     if ((test.device->getBattery() != 0) && (test.device->getHeartContact() == true && (test.device->getPower() == true))) {
         test.device->depleteBattery();
         if (index < dataSetBound){
@@ -588,9 +522,6 @@ void MainWindow::addCoordinates(double x, double y, int score){
     ui->widgetGraph->graph(0)->addData(x, y);
     ui->widgetGraph->graph(0)->rescaleAxes(true);
     ui->widgetGraph->replot();
-    /*ui->widgetGraph->graph(0)->addData(x, y);
-    ui->widgetGraph->graph(0)->rescaleAxes();
-    ui->widgetGraph->replot();*/
 }
 
 
@@ -600,7 +531,6 @@ void MainWindow::displaySessionGraph(std::vector<std::pair<double, double>> grap
 
     ui->widgetGraph->graph(0)->data()->clear();
     ui->widgetGraph->xAxis->setRange(0, graphData.back().first);
-    //ui->widgetGraph->xAxis->setRange(graphData.front().first, graphData.back().first);
 
     for (int i = 0; i < graphData.size(); i++){
         ui->widgetGraph->graph(0)->addData(graphData.at(i).first, graphData.at(i).second);
@@ -609,8 +539,6 @@ void MainWindow::displaySessionGraph(std::vector<std::pair<double, double>> grap
             ui->widgetGraph->yAxis->setRangeUpper(historyYMax+10);
 
         }
-        //ui->widgetGraph->graph(0)->rescaleValueAxis();
-        //ui->widgetGraph->replot();
     }
     ui->widgetGraph->graph(0)->rescaleAxes(true);
     ui->widgetGraph->replot();

@@ -41,7 +41,6 @@ Variables:
 
 Functions:
     MainWindow(QWidget *parent = nullptr);                                                  -> MainWindow constructor
-    void consoleMenu();                                                                     -> Console Output for relevant data
     void handleButtons();                                                                   -> Handle button selections
     ~MainWindow();                                                                          -> Deconstructor
     void setBattery_UI(int newVal);                                                         -> UI Element: Set Battery
@@ -74,7 +73,6 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    void consoleMenu();
     void handleButtons();
     ~MainWindow();
     void setBattery_UI(int newVal);
