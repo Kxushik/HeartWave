@@ -42,14 +42,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     //Initialize menu
     menuUI = ui->listMenu;
     menuUI->addItems(test.menuList);
-    ui->labelMenu->setText("Summary");
+    ui->labelMenu->setText("Menu");
     menuUI->setCurrentRow(0);
     //Disable End Session on start
     QListWidgetItem *item = menuUI->item(1);
     item->setFlags(item->flags() & ~Qt::ItemIsSelectable);
     //Disable menu on start
-    menuUI->setVisible(false);
+    menuUI->setVisible(true);
     initializeGraphs();
+    ui->screenBlack1->setVisible(true);
+    ui->screenBlack2->setVisible(true);
+    ui->screenBlack3->setVisible(true);
 
 
 
@@ -191,14 +194,17 @@ void MainWindow::handleButtons() {
             test.device->setPower() ;
             qDebug() << test.device->getPower();
             if (test.device->getPower() == false) {
-                //turn screen black (need to account for if theres a session running or not)
-                //deinitialize();
+                ui->screenBlack1->setVisible(true);
+                ui->screenBlack2->setVisible(true);
+                ui->screenBlack3->setVisible(true);
                 qDebug() << "Turn Off";
 
             }
             else if (test.device->getPower() == true) {
                 //display turns on (should be the same as when we start up the app)
-                //initialize();
+                ui->screenBlack1->setVisible(false);
+                ui->screenBlack2->setVisible(false);
+                ui->screenBlack3->setVisible(false);
                 qDebug() << "Turn On";
 
             }

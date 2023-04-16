@@ -4,7 +4,7 @@ Device::Device(){
     coherence = -1;
     challenge = -1;
     nextID = 0;
-    power = true;
+    power = false;
     battery = 100.00;
     heartContact = true;
     dev_history = new History();
