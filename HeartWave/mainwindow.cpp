@@ -417,7 +417,7 @@ void MainWindow::handleOk() {
         xMax = 0;
         ui->widgetGraph->graph(0)->data()->clear();
         ui->widgetGraph->graph(0)->rescaleAxes();
-        ui->widgetGraph->replot();
+        //ui->widgetGraph->replot();
         std::tuple<double,double,double,double,int,int,double> dataTuple = test.device->getCurrentSession()->getSummary();
         handleSummary(dataTuple);
         test.endSession();
@@ -453,7 +453,14 @@ void MainWindow::handleOk() {
         qDebug() << qPrintable("Deleting all sessions.");
         test.device->getHistory()->clearSessions();
         handleBack();
+        ui->widgetGraph->graph(0)->data()->clear();
+        ui->widgetGraph->graph(0)->rescaleAxes(true);
+        ui->widgetGraph->replot();
     } else if (itemName == "Factory Reset") {
+        ui->widgetGraph->graph(0)->data()->clear();
+        ui->widgetGraph->graph(0)->rescaleAxes(true);
+        ui->widgetGraph->replot();
+        ui->widgetGraph->setVisible(false);
         test.device->getSettings()->factoryReset();
         test.device->getHistory()->clearSessions();
         std::tuple<double,double,double,double,int,int,double> blankSummary = make_tuple(0,0,0,0,0,0,0);
@@ -559,7 +566,7 @@ void MainWindow::addCoordinates(double x, double y, int score){
 
     if (y > yMax){
         yMax = y;
-        ui->widgetGraph->yAxis->setRangeUpper(yMax);
+        ui->widgetGraph->yAxis->setRangeUpper(yMax+10);
 
     }
 
@@ -570,8 +577,6 @@ void MainWindow::addCoordinates(double x, double y, int score){
     }
     ui->widgetGraph->graph(0)->addData(x, y);
     ui->widgetGraph->graph(0)->rescaleAxes(true);
-    //ui->widgetGraph->graph(1)->addData(x, y); //review
-    //ui->widgetGraph->graph(1)->rescaleAxes(true); //review
     ui->widgetGraph->replot();
     /*ui->widgetGraph->graph(0)->addData(x, y);
     ui->widgetGraph->graph(0)->rescaleAxes();
@@ -581,14 +586,20 @@ void MainWindow::addCoordinates(double x, double y, int score){
 
 void MainWindow::displaySessionGraph(std::vector<std::pair<double, double>> graphData){
 
+    int historyYMax = graphData.at(0).second;
+
     ui->widgetGraph->graph(0)->data()->clear();
-    //ui->widgetGraph->graph(1)->data()->clear(); //review
-    //ui->widgetGraph->graph(1)->setVisible(false); //review
-    ui->widgetGraph->xAxis->setRange(graphData.front().first, graphData.back().first);
+    ui->widgetGraph->xAxis->setRange(0, graphData.back().first);
+    //ui->widgetGraph->xAxis->setRange(graphData.front().first, graphData.back().first);
 
     for (int i = 0; i < graphData.size(); i++){
         ui->widgetGraph->graph(0)->addData(graphData.at(i).first, graphData.at(i).second);
-        //ui->widgetGraph->graph(0)->rescaleAxes(true);
+        if (graphData.at(i).second > historyYMax){
+            historyYMax = graphData.at(i).second;
+            ui->widgetGraph->yAxis->setRangeUpper(historyYMax+10);
+
+        }
+        //ui->widgetGraph->graph(0)->rescaleValueAxis();
         //ui->widgetGraph->replot();
     }
     ui->widgetGraph->graph(0)->rescaleAxes(true);
@@ -599,12 +610,7 @@ void MainWindow::initializeGraphs(){
 
     ui->widgetGraph->setVisible(false);
     ui->widgetGraph->addGraph();
-    //ui->widgetGraph->addGraph();//review
-    //ui->widgetGraph->addGraph();//review
-    //ui->widgetGraph->addGraph();//review
-    //ui->widgetGraph->graph(1)->setVisible(false); //review
-    //ui->widgetGraph->graph(2)->setVisible(false); //review
-    //ui->widgetGraph->graph(3)->setVisible(false); //review
+
     ui->widgetGraph->xAxis->setLabel("Time (s)");
     ui->widgetGraph->yAxis->setLabel("Heart Rate");
 
@@ -624,11 +630,4 @@ void MainWindow::initializeGraphs(){
     ui->widgetGraph->yAxis->setBasePen(QColor (255, 255, 255));
 
     ui->widgetGraph->setBackground(QColor(0, 23, 45));
-
-    //ui->widgetGraph->graph(1)->setLineStyle(QCPGraph::lsNone); //review
-    //ui->widgetGraph->graph(1)->setScatterStyle(QCPScatterStyle::ssDisc); //review
-    /*ui->widgetGraph->graph(2)->setLineStyle(IsNone); //review
-    ui->widgetGraph->graph(2)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, QColor(0,0,255))); //review
-    ui->widgetGraph->graph(3)->setLineStyle(IsNone); //review
-    ui->widgetGraph->graph(3)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, QColor(0,255,0))); //review*/
 }
