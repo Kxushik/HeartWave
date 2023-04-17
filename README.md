@@ -23,7 +23,9 @@ Adrian A. | Front-end, Use Cases and Video
 Kaushik P.| Back-end, UML Class Diagram and Textual Explanation
 Kyle P.   | Back-end, UML Class Diagram and Sequence Diagrams
 Matthew A.| Front-end, Use Cases and Traceability Matrix
+
 Video Demo Link : https://www.youtube.com/watch?v=8czztCwHTaY&feature=youtu.be
+
 # Organization of Submission
 - All of the delivarables (textual explanation, diagrams, and traceability matrix) are in the documenation folder.
 - Implementation of the HeartWave application is in the HeartWave folder.
